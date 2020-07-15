@@ -1,0 +1,11 @@
+%h2 配達時間帯の詳細
+
+.card-group
+  .card
+    .card-header 開始時
+    .card-body= @delivery_period.hour_from_s
+  .card
+    .card-header 終了時
+    .card-body= @delivery_period.hour_to_s
+
+= link_to '戻る', admin_delivery_periods_path, class: 'btn btn-outline-secondary'

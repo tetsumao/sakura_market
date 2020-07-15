@@ -1,0 +1,21 @@
+-# frozen_string_literal: true
+= simple_form_for(@order) do |f|
+  = f.error_notification
+  = f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present?
+
+  .row
+    .col-lg-3
+      %h3 配達希望日時
+      .form-inputs
+        = f.input :delivery_date, as: :select, collection: Order.delivery_dates, include_blank: false
+        = f.association :delivery_period, label_method: :period_name, include_blank: false
+    .col-lg-9
+      %h3 配達先
+      .form-inputs
+        = f.input :ship_zip
+        = f.input :ship_address
+        = check_box_tag :update_ship, 1, @update_ship == 1
+        = label_tag :update_ship, '配達先で住所情報を更新'
+
+  .form-actions.text-center
+    = f.button :submit, '注文を確定する', class: 'btn btn-danger btn-lg'

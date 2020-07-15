@@ -1,0 +1,35 @@
+%h2 ユーザの詳細
+
+.row.mb-3
+  .col-lg-8
+    .card
+      .card-header メールアドレス
+      .card-body= @user.email
+  .col-lg-4
+    .card
+      .card-header ユーザ名
+      .card-body= @user.user_name
+.row.mb-3
+  .col-lg-3
+    .card
+      .card-header 郵便番号
+      .card-body= @user.zip
+  .col-lg-9
+    .card
+      .card-header 住所
+      .card-body= @user.address
+.row.mb-3
+  .col-lg-2
+    .card
+      .card-header サインイン回数
+      .card-body= @user.sign_in_count
+  .col-lg-5
+    .card
+      .card-header 現在のサインイン時間
+      .card-body= @user.current_sign_in_at
+  .col-lg-5
+    .card
+      .card-header 最後のサインイン時間
+      .card-body= @user.last_sign_in_at
+
+= link_to '戻る', admin_users_path, class: 'btn btn-outline-secondary'

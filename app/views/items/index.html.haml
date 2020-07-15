@@ -1,0 +1,17 @@
+%h2 商品一覧
+
+- length = @items.length
+- (0..((length-1).div(3))).each do |row_index|
+  .card-deck
+    - (0..2).each do |col_index|
+      - index = row_index * 3 + col_index
+      .card.mb-3
+        - if index < length
+          - item = @items[index]
+          .card-header
+            = link_to item.item_name, item, class: 'card-link'
+          .card-body
+            = link_to(item) do
+              %img.card-img-top{ src: item.picture.url, alt: item.item_name }
+          = render 'cart_item_form', item: item, disabled: @item_ids_in_cart.include?(item.id), options: {remote: true}
+= paginate @items

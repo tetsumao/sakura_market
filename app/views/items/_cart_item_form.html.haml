@@ -1,0 +1,16 @@
+%ul.list-group.list-group-flush
+  - if user_signed_in?
+    = form_with({model: CartItem.new}.merge(options)) do |f|
+      = f.hidden_field :item_id, value: item.id
+      %li.list-group-item
+        .row.text-right
+          .col-lg-7
+            = number_to_currency(item.price)
+          .col-lg-5
+            = f.label :quantity
+            = f.select :quantity, 1..30, {}, id:nil
+      %li.list-group-item
+        = f.submit (disabled ? 'カートに入っています' : 'カートに入れる'), id: "cartItemSubmit#{item.id}", class: 'btn btn-primary btn-block', data: {disable_with: 'カートに入れます..'}, disabled: disabled
+  - else
+    %li.list-group-item
+      = number_to_currency(item.price)

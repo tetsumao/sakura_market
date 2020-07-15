@@ -1,0 +1,17 @@
+-# frozen_string_literal: true
+= simple_form_for(@item, url: (@item.new_record? ? admin_items_path : admin_item_path(@item))) do |f|
+  = f.error_notification
+  = f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present?
+
+  .form-inputs
+    = f.input :item_name
+    = f.input :picture, required: true, as: :file
+    - if @item.picture.present?
+      .text-center= image_tag @item.picture.url
+    = f.input :price
+    = f.input :description
+    = f.input :disabled
+    = f.input :dspo
+
+  .form-actions.text-center
+    = f.button :submit, class: 'btn btn-primary'

@@ -1,0 +1,14 @@
+%h2 管理者の詳細
+
+.card-group
+  .card
+    .card-header ログイン名
+    .card-body= @admin.login_name
+  .card
+    .card-header 管理者名
+    .card-body= @admin.admin_name
+  .card
+    .card-header 表示順
+    .card-body= @admin.dspo
+
+= link_to '戻る', admin_admins_path, class: 'btn btn-outline-secondary'

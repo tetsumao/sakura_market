@@ -1,0 +1,10 @@
+<% unless @cart_item.errors.any? %>
+  $('#cartItemCount').text('<%= current_user.cart_items.quantity %>');
+  toastr.info('<%= @cart_item.item.item_name %> x <%= @cart_item.quantity %> をカートに追加しました。');
+  <%# カートに入れるボタンは有効化処理が走るので遅延して無効化 %>
+  setTimeout(function(){
+    $('#cartItemSubmit<%= @cart_item.item_id %>').val('カートに入っています').attr('disabled', true);
+  }, 0);
+<% else %>
+  toastr.warning('カートに追加できませんでした：<%= @cart_item.errors.full_messages %>');
+<% end %>

@@ -1,0 +1,26 @@
+%h2 代引き手数料一覧
+
+%table.table
+  %thead.thead-dark
+    %tr
+      %th{ scope: 'col' } ID
+      %th{ scope: 'col' } 開始価格
+      %th{ scope: 'col' } 終了価格(未満)
+      %th{ scope: 'col' } 手数料
+      %th
+      %th
+      %th
+
+  %tbody
+    - @charges.each do |charge|
+      %tr
+        %td= charge.id
+        %td= charge.price_from
+        %td= charge.price_to
+        %td= charge.charge
+        %td= link_to '表示', admin_charge_path(charge), class: 'btn btn-outline-dark btn-sm'
+        %td= link_to '編集', edit_admin_charge_path(charge), class: 'btn btn-outline-info btn-sm'
+        %td= link_to '削除', admin_charge_path(charge), class: 'btn btn-danger btn-sm', method: :delete, data: { confirm: '削除してよろしいですか？' }
+= paginate @charges
+
+= link_to '新しい代引き手数料', new_admin_charge_path, class: 'btn btn-primary'

@@ -1,0 +1,24 @@
+%h2 配達時間帯一覧
+
+%table.table
+  %thead.thead-dark
+    %tr
+      %th{ scope: 'col' } ID
+      %th{ scope: 'col' } 開始時
+      %th{ scope: 'col' } 終了時
+      %th
+      %th
+      %th
+
+  %tbody
+    - @delivery_periods.each do |delivery_period|
+      %tr
+        %td= delivery_period.id
+        %td= delivery_period.hour_from_s
+        %td= delivery_period.hour_to_s
+        %td= link_to '表示', admin_delivery_period_path(delivery_period), class: 'btn btn-outline-dark btn-sm'
+        %td= link_to '編集', edit_admin_delivery_period_path(delivery_period), class: 'btn btn-outline-info btn-sm'
+        %td= link_to '削除', admin_delivery_period_path(delivery_period), class: 'btn btn-danger btn-sm', method: :delete, data: { confirm: '削除してよろしいですか？' }
+= paginate @delivery_periods
+
+= link_to '新しい配達時間帯', new_admin_delivery_period_path, class: 'btn btn-primary'

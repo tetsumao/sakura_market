@@ -1,0 +1,53 @@
+!!!
+%html
+  %head
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+    %title さくらマーケット (管理)
+    = csrf_meta_tags
+    = csp_meta_tag
+    = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
+    = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
+    = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
+  %body{style: 'padding-top: 70px;'}
+    .fixed-top
+      %nav.navbar.navbar-expand-md.bg-mytop.navbar-dark.bg-dark
+        .container
+          = link_to 'さくらマーケット(管理)', admin_root_path, class: 'navbar-brand'
+          %button.navbar-toggler{type: 'button', 'data-toggle': 'collapse', 'data-target': '#navbarNavDropdown', 'aria-controls': 'navbarNavDropdown', 'aria-expanded': false, 'aria-label': 'Toggle navigation'}
+            %span.navbar-toggler-icon
+          .collapse.navbar-collapse#navbarNavDropdown
+            - if admin_signed_in?
+              %ul.navbar-nav.mr-auto
+                %li.nav-item
+                  %a.nav-link{href: admin_items_path}
+                    商品一覧
+                %li.nav-item
+                  %a.nav-link{href: admin_charges_path}
+                    代引き手数料一覧
+                %li.nav-item
+                  %a.nav-link{href: admin_delivery_periods_path}
+                    配達時間帯一覧
+                %li.nav-item
+                  %a.nav-link{href: admin_users_path}
+                    ユーザ一覧
+                %li.nav-item
+                  %a.nav-link{href: admin_admins_path}
+                    管理者一覧
+              %ul.navbar-nav
+                %li.nav-item
+                  %a.nav-link{href: admin_admin_path(current_admin.id)}
+                    #{current_admin.admin_name} さん
+                %li.nav-item
+                  %a.nav-link{href: admin_session_path, 'data-method': :delete}
+                    ログアウト
+    .container
+      %header
+        -if flash.notice
+          %script{ type: 'text/javascript' }
+            $(function(){ toastr.info('#{flash.notice}'); });
+        -if flash.alert
+          %script{ type: 'text/javascript' }
+            $(function(){ toastr.warning('#{flash.alert}'); });
+      = yield
+      %footer
+        .fixed-bottom.bg-mytop &copy; 2020

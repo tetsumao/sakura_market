@@ -1,0 +1,11 @@
+-# frozen_string_literal: true
+= simple_form_for(@delivery_period, url: (@delivery_period.new_record? ? admin_delivery_periods_path : admin_delivery_period_path(@delivery_period))) do |f|
+  = f.error_notification
+  = f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present?
+
+  .form-inputs
+    = f.input :hour_from
+    = f.input :hour_to
+
+  .form-actions.text-center
+    = f.button :submit, class: 'btn btn-primary'

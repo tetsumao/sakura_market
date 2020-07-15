@@ -1,0 +1,25 @@
+%h2 商品の詳細
+
+.row.mb-3
+  .col-lg-5
+    .card
+      .card-header 商品名
+      .card-body= @item.item_name
+    .card-group
+      .card
+        .card-header 単価
+        .card-body.text-right= number_to_currency(@item.price)
+      .card
+        .card-header 非表示
+        .card-body= @item.disabled
+      .card
+        .card-header 表示順
+        .card-body= @item.dspo
+    .card
+      .card-header 説明
+      .card-body= @item.description
+  .col-lg-7
+    - if @item.picture.present?
+      .text-center= image_tag @item.picture.url
+
+= link_to '戻る', admin_items_path, class: 'btn btn-outline-secondary'

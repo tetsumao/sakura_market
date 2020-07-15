@@ -1,0 +1,12 @@
+-# frozen_string_literal: true
+= simple_form_for(@charge, url: (@charge.new_record? ? admin_charges_path : admin_charge_path(@charge))) do |f|
+  = f.error_notification
+  = f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present?
+
+  .form-inputs
+    = f.input :price_from
+    = f.input :price_to
+    = f.input :charge
+
+  .form-actions.text-center
+    = f.button :submit, class: 'btn btn-primary'

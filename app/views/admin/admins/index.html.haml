@@ -1,0 +1,26 @@
+%h2 管理者一覧
+
+%table.table
+  %thead.thead-dark
+    %tr
+      %th{ scope: 'col' } ID
+      %th{ scope: 'col' } ログイン名
+      %th{ scope: 'col' } 管理者名
+      %th{ scope: 'col' } 表示順
+      %th
+      %th
+      %th
+
+  %tbody
+    - @admins.each do |admin|
+      %tr
+        %td= admin.id
+        %td= admin.login_name
+        %td= admin.admin_name
+        %td= admin.dspo
+        %td= link_to '表示', admin_admin_path(admin), class: 'btn btn-outline-dark btn-sm'
+        %td= link_to '編集', edit_admin_admin_path(admin), class: 'btn btn-outline-info btn-sm'
+        %td= link_to '削除', admin_admin_path(admin), class: 'btn btn-danger btn-sm', method: :delete, data: { confirm: '削除してよろしいですか？' }
+= paginate @admins
+
+= link_to '新しい管理者', new_admin_admin_path, class: 'btn btn-primary'

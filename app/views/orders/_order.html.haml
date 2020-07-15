@@ -1,0 +1,37 @@
+.row
+  .col-lg-8
+    %h3 商品一覧
+    %table.table.table-bordered
+      %thead.thead-light
+        %tr.text-center
+          %th{ scope: 'col' } 商品名
+          %th{ scope: 'col' } 単価
+          %th{ scope: 'col' } 数量
+          %th{ scope: 'col' } 価格
+
+      %tbody
+        - @order.order_items.each do |order_item|
+          %tr
+            %td.align-middle= order_item.item_name
+            %td.align-middle.text-right= number_to_currency(order_item.price)
+            %td.align-middle.text-right= order_item.quantity
+            %td.align-middle.text-right= number_to_currency(order_item.price * order_item.quantity)
+  .col-lg-4
+    %h3 請求金額
+    %table.table.table-bordered
+      %thead.thead-light
+        %tr
+          %th 商品金額
+          %td.text-right= number_to_currency(@order.item_price)
+        %tr
+          %th 代引き手数料
+          %td.text-right= number_to_currency(@order.charge_price)
+        %tr
+          %th 送料
+          %td.text-right= number_to_currency(@order.shipping_price)
+        %tr
+          %th 消費税
+          %td.text-right= number_to_currency(@order.tax_price)
+        %tr
+          %th 合計金額
+          %td.text-right= number_to_currency(@order.total_price)

@@ -1,0 +1,25 @@
+%h2 購入履歴
+
+%table.table.table-bordered
+  %thead.thead-light
+    %tr.text-center
+      %th{ scope: 'col' } 注文日
+      %th{ scope: 'col' } 配達希望日時
+      %th{ scope: 'col' } 商品金額
+      %th{ scope: 'col' } 代引き手数料
+      %th{ scope: 'col' } 送料
+      %th{ scope: 'col' } 消費税
+      %th{ scope: 'col' } 合計金額
+      %th
+  %tbody
+    - @orders.each do |order|
+      %tr
+        %td.text-center= order.created_at.strftime('%Y/%m/%d')
+        %td.text-center= "#{order.delivery_date.strftime('%Y/%m/%d')} #{order.delivery_period.period_name}"
+        %td.text-right= number_to_currency(order.item_price)
+        %td.text-right= number_to_currency(order.charge_price)
+        %td.text-right= number_to_currency(order.shipping_price)
+        %td.text-right= number_to_currency(order.tax_price)
+        %td.text-right= number_to_currency(order.total_price)
+        %td= link_to '詳細', order
+= paginate @orders
