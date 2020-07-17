@@ -5,6 +5,7 @@
     %title さくらマーケット (管理)
     = csrf_meta_tags
     = csp_meta_tag
+    = stylesheet_pack_tag('application', media: 'all', 'data-turbolinks-track': 'reload') if Rails.env.production?
     = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
     = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
