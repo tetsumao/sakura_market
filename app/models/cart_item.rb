@@ -5,6 +5,8 @@ class CartItem < ApplicationRecord
   validates :item_id, uniqueness: {scope: :user_id}
   validates :quantity, numericality: {greater_than: 0}
 
+  include ToastrErrorsOutputter
+
   def self.item_price
     all.inject(0){|s, cart_item| s + cart_item.item.price * cart_item.quantity}
   end

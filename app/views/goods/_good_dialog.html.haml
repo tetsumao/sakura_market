@@ -1,0 +1,25 @@
+.modal.fade#goodedUserDialog{tabindex: -1, role: 'dialog', 'aria-labelledby': 'postDialogLabel', 'aria-hidden': 'true'}
+  .modal-dialog{role: 'document'}
+    .modal-content
+      .modal-header
+        %h5.modal-title#goodedUserDialogLabel
+          Good! しているユーザー
+        %button.close{type: 'button', 'data-dismiss': 'modal', 'aria-label': 'Close'}
+          %span{'aria-hidden': 'true'}
+            &times;
+      .modal-body
+        #goodedUserDialogBody
+      .modal-footer
+        %button.btn.btn-secondary{type: 'button', 'data-dismiss': 'modal'}
+          閉じる
+= form_with id: 'goodedUsersForm', url: gooded_users_diaries_path, remote: true do |f|
+  = f.hidden_field :id, id: ''
+  = f.submit '', style: 'display: none'
+:javascript
+  $(function() {
+    $('#goodedUserDialog').on('show.bs.modal', function(event) {
+      var diary_id = $(event.relatedTarget).val();
+      $('#goodedUsersForm [name=id]').val(diary_id);
+      $('#goodedUsersForm [name=commit]').click();
+    });
+  });

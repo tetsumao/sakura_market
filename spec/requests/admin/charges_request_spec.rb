@@ -17,7 +17,7 @@ RSpec.describe "/charges", type: :request do
   let(:invalid_attributes) { attributes_for(:charge, charge: nil) }
 
   describe "GET /index" do
-    it "renders a successful response" do
+    it '成功した応答をレンダリング' do
       Charge.create! valid_attributes
       get admin_charges_url
       expect(response).to be_successful
@@ -25,7 +25,7 @@ RSpec.describe "/charges", type: :request do
   end
 
   describe "GET /show" do
-    it "renders a successful response" do
+    it '成功した応答をレンダリング' do
       charge = Charge.create! valid_attributes
       get admin_charge_url(charge)
       expect(response).to be_successful
@@ -33,14 +33,14 @@ RSpec.describe "/charges", type: :request do
   end
 
   describe "GET /new" do
-    it "renders a successful response" do
+    it '成功した応答をレンダリング' do
       get new_admin_charge_url
       expect(response).to be_successful
     end
   end
 
   describe "GET /edit" do
-    it "render a successful response" do
+    it '成功した応答をレンダリング' do
       charge = Charge.create! valid_attributes
       get edit_admin_charge_url(charge)
       expect(response).to be_successful
@@ -48,27 +48,27 @@ RSpec.describe "/charges", type: :request do
   end
 
   describe "POST /create" do
-    context "with valid parameters" do
-      it "creates a new Charge" do
+    context '正常パラメータを入力' do
+      it '新しい代引き手数料を作成' do
         expect {
           post admin_charges_url, params: { charge: valid_attributes }
         }.to change(Charge, :count).by(1)
       end
 
-      it "redirects to the created charge" do
+      it '新しい代引き手数料作成後のリダイレクト' do
         post admin_charges_url, params: { charge: valid_attributes }
         expect(response).to redirect_to(admin_charges_url)
       end
     end
 
-    context "with invalid parameters" do
+    context '不正パラメータを入力' do
       it "does not create a new Charge" do
         expect {
           post admin_charges_url, params: { charge: invalid_attributes }
         }.to change(Charge, :count).by(0)
       end
 
-      it "renders a successful response (i.e. to display the 'new' template)" do
+      it 'newテンプレートでレンダリングして成功応答' do
         post admin_charges_url, params: { charge: invalid_attributes }
         expect(response).to be_successful
       end
@@ -76,7 +76,7 @@ RSpec.describe "/charges", type: :request do
   end
 
   describe "PATCH /update" do
-    context "with valid parameters" do
+    context '正常パラメータを入力' do
       let(:new_attributes) {
         {charge: 999}
       }
@@ -96,8 +96,8 @@ RSpec.describe "/charges", type: :request do
       end
     end
 
-    context "with invalid parameters" do
-      it "renders a successful response (i.e. to display the 'edit' template)" do
+    context '不正パラメータを入力' do
+      it 'editテンプレートでレンダリングして成功応答' do
         charge = Charge.create! valid_attributes
         patch admin_charge_url(charge), params: { charge: invalid_attributes }
         expect(response).to be_successful

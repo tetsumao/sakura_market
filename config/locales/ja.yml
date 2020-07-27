@@ -10,6 +10,10 @@ ja:
       order_item: '注文商品'
       order: '注文'
       user: 'ユーザ'
+      diary: '日記'
+      comment: 'コメント'
+      good: 'Good!'
+      coupon: 'クーポン'
     attributes:
       admin:
         login_name: 'ログイン名'
@@ -57,6 +61,25 @@ ja:
         user_name: 'ユーザ名'
         zip: '郵便番号'
         address: '住所'
+        nickname: 'ニックネーム'
+        picture: 'プロフィール画像'
+      diary:
+        content: '本文'
+        user: '投稿ユーザ'
+        picture: '日記画像'
+      comment:
+        content: '本文'
+        user: 'コメントしたユーザ'
+        diary: 'コメントした日記'
+      good:
+        user: 'Good!したユーザ'
+        diary: 'Good!した日記'
+      coupon:
+        coupon_code: 'クーポンコード'
+        admin: '発行した管理者'
+        user: '付与したユーザ'
+        point: 'ポイント数'
+        order: '使用された注文'
     errors:
       messages:
         record_invalid: "バリデーションに失敗しました: %{errors}"

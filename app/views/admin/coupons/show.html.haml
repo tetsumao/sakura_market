@@ -1,0 +1,17 @@
+%h2 クーポンの詳細
+
+.card-group
+  .card
+    .card-header ログイン名
+    .card-body= @coupon.coupon_code
+  .card
+    .card-header 発行した管理者名
+    .card-body= @coupon.admin.admin_name
+  .card
+    .card-header 付与したユーザ
+    .card-body= @coupon.user.present? ? @coupon.user.user_name : '-'
+  .card
+    .card-header ポイント
+    .card-body= @coupon.point
+
+= link_to '戻る', admin_coupons_path, class: 'btn btn-outline-secondary'

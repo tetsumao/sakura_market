@@ -17,55 +17,55 @@ RSpec.describe "/admin/admins", type: :request do
   let(:invalid_attributes) { attributes_for(:admin, login_name: 'login.name') }
 
   describe "GET /index" do
-    it "renders a successful response" do
+    it '成功した応答をレンダリング' do
       get admin_admins_url
       expect(response).to be_successful
     end
   end
 
   describe "GET /show" do
-    it "renders a successful response" do
+    it '成功した応答をレンダリング' do
       get admin_admin_url(admin)
       expect(response).to be_successful
     end
   end
 
   describe "GET /new" do
-    it "renders a successful response" do
+    it '成功した応答をレンダリング' do
       get new_admin_admin_url
       expect(response).to be_successful
     end
   end
 
   describe "GET /edit" do
-    it "render a successful response" do
+    it '成功した応答をレンダリング' do
       get edit_admin_admin_url(admin)
       expect(response).to be_successful
     end
   end
 
   describe "POST /create" do
-    context "with valid parameters" do
-      it "creates a new Admin" do
+    context '正常パラメータを入力' do
+      it '新しい管理者を作成' do
         expect {
           post admin_admins_url, params: { admin: valid_attributes }
         }.to change(Admin, :count).by(1)
       end
 
-      it "redirects to the created admin" do
+      it '新しい管理者作成後のリダイレクト' do
         post admin_admins_url, params: { admin: valid_attributes }
         expect(response).to redirect_to(admin_admins_url)
       end
     end
 
-    context "with invalid parameters" do
+    context '不正パラメータを入力' do
       it "does not create a new Admin" do
         expect {
           post admin_admins_url, params: { admin: invalid_attributes }
         }.to change(Admin, :count).by(0)
       end
 
-      it "renders a successful response (i.e. to display the 'new' template)" do
+      it 'newテンプレートでレンダリングして成功応答' do
         post admin_admins_url, params: { admin: invalid_attributes }
         expect(response).to be_successful
       end
@@ -73,7 +73,7 @@ RSpec.describe "/admin/admins", type: :request do
   end
 
   describe "PATCH /update" do
-    context "with valid parameters" do
+    context '正常パラメータを入力' do
       let(:new_attributes) {
         {login_name: 'loglog'}
       }
@@ -90,8 +90,8 @@ RSpec.describe "/admin/admins", type: :request do
       end
     end
 
-    context "with invalid parameters" do
-      it "renders a successful response (i.e. to display the 'edit' template)" do
+    context '不正パラメータを入力' do
+      it 'editテンプレートでレンダリングして成功応答' do
         patch admin_admin_url(admin), params: { admin: invalid_attributes }
         expect(response).to be_successful
       end

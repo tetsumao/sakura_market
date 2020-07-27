@@ -1,0 +1,49 @@
+%h2 ポイント履歴
+
+%button.btn.btn-primary{ type: 'button', 'data-toggle': 'modal', 'data-target': '#couponCodeDialog' }
+  %i.far.fa-window-maximize
+  クーポンコード入力
+
+%table.table.table-bordered
+  %thead.thead-light
+    %tr.text-center
+      %th{ scope: 'col' } 日時
+      %th{ scope: 'col' } クーポンコード
+      %th{ scope: 'col' } 種別
+      %th{ scope: 'col' } ポイント数
+  %tbody
+    - @coupons.each do |coupon|
+      %tr
+        %td.text-center= coupon.updated_at.strftime('%Y/%m/%d %H:%M')
+        %td.text-center= coupon.display_coupon_code
+        %td.text-center= coupon.order_id.nil? ? '獲得' : '利用'
+        %td.text-right= coupon.point
+= paginate @coupons
+
+-# クーポンコード入力ダイアログ
+.modal.fade#couponCodeDialog{tabindex: -1, role: 'dialog', 'aria-labelledby': 'couponCodeDialogLabel', 'aria-hidden': 'true'}
+  .modal-dialog{role: 'document'}
+    .modal-content
+      = form_with model: Coupon.new, remote: true do |f|
+        .modal-header
+          %h5.modal-title#couponCodeDialogLabel
+            クーポンコード入力
+          %button.close{type: 'button', 'data-dismiss': 'modal', 'aria-label': 'Close'}
+            %span{'aria-hidden': 'true'}
+              &times;
+        .modal-body
+          #error_explanation{style: 'display: none'}
+            %h2
+            %ul
+          .field
+            = f.text_field :coupon_code, class: 'form-control'
+        .modal-footer
+          = f.submit '登録する', class: 'btn btn-primary'
+          %button.btn.btn-secondary{type: 'button', 'data-dismiss': 'modal'}
+            閉じる
+:javascript
+  $(function() {
+    $('#couponCodeDialog').on('hide.bs.modal', function (event) {
+      $('#coupon_coupon_code').val('');
+    });
+  });

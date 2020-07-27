@@ -17,7 +17,7 @@ RSpec.describe "Admin::Users", type: :request do
   let(:invalid_attributes) { attributes_for(:user, email: 'aaa') }
 
   describe "GET /index" do
-    it "renders a successful response" do
+    it '成功した応答をレンダリング' do
       User.create! valid_attributes
       get admin_users_url
       expect(response).to be_successful
@@ -25,7 +25,7 @@ RSpec.describe "Admin::Users", type: :request do
   end
 
   describe "GET /show" do
-    it "renders a successful response" do
+    it '成功した応答をレンダリング' do
       user = User.create! valid_attributes
       get admin_user_url(user)
       expect(response).to be_successful
@@ -33,7 +33,7 @@ RSpec.describe "Admin::Users", type: :request do
   end
 
   describe "GET /edit" do
-    it "render a successful response" do
+    it '成功した応答をレンダリング' do
       user = User.create! valid_attributes
       get edit_admin_user_url(user)
       expect(response).to be_successful
@@ -41,7 +41,7 @@ RSpec.describe "Admin::Users", type: :request do
   end
 
   describe "PATCH /update" do
-    context "with valid parameters" do
+    context '正常パラメータを入力' do
       let(:new_attributes) {
         {email: 'abc@example.com'}
       }
@@ -61,8 +61,8 @@ RSpec.describe "Admin::Users", type: :request do
       end
     end
 
-    context "with invalid parameters" do
-      it "renders a successful response (i.e. to display the 'edit' template)" do
+    context '不正パラメータを入力' do
+      it 'editテンプレートでレンダリングして成功応答' do
         user = User.create! valid_attributes
         patch admin_user_url(user), params: { user: invalid_attributes }
         expect(response).to be_successful

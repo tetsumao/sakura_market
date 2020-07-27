@@ -1,0 +1,18 @@
+%h2 注文を確認してください
+
+= render 'order', with_point_and_delivery: true
+.row
+  .col-lg-9.offset-lg-3
+    = "配達先で住所情報を更新#{(@update_ship == 1) ? 'する' : 'しない'}"
+= form_with model: @order do |f|
+  = hidden_field_tag :coupon_use, @coupon_use
+  = hidden_field_tag :coupon_use_point, @coupon_use_point
+  = hidden_field_tag :update_ship, @update_ship
+  = f.hidden_field :delivery_date
+  = f.hidden_field :delivery_period_id
+  = f.hidden_field :ship_zip
+  = f.hidden_field :ship_address
+  .form-actions.text-center
+    = f.submit '注文を確定する', class: 'btn btn-danger btn-lg'
+
+= link_to 'ポイントと配達先の入力へ戻る', new_order_path, class: 'btn btn-outline-secondary'

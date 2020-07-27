@@ -17,7 +17,7 @@ RSpec.describe "/delivery_periods", type: :request do
   let(:invalid_attributes) { attributes_for(:delivery_period, hour_from: nil) }
 
   describe "GET /index" do
-    it "renders a successful response" do
+    it '成功した応答をレンダリング' do
       DeliveryPeriod.create! valid_attributes
       get admin_delivery_periods_url
       expect(response).to be_successful
@@ -25,7 +25,7 @@ RSpec.describe "/delivery_periods", type: :request do
   end
 
   describe "GET /show" do
-    it "renders a successful response" do
+    it '成功した応答をレンダリング' do
       delivery_period = DeliveryPeriod.create! valid_attributes
       get admin_delivery_period_url(delivery_period)
       expect(response).to be_successful
@@ -33,14 +33,14 @@ RSpec.describe "/delivery_periods", type: :request do
   end
 
   describe "GET /new" do
-    it "renders a successful response" do
+    it '成功した応答をレンダリング' do
       get new_admin_delivery_period_url
       expect(response).to be_successful
     end
   end
 
   describe "GET /edit" do
-    it "render a successful response" do
+    it '成功した応答をレンダリング' do
       delivery_period = DeliveryPeriod.create! valid_attributes
       get edit_admin_delivery_period_url(delivery_period)
       expect(response).to be_successful
@@ -48,27 +48,27 @@ RSpec.describe "/delivery_periods", type: :request do
   end
 
   describe "POST /create" do
-    context "with valid parameters" do
-      it "creates a new DeliveryPeriod" do
+    context '正常パラメータを入力' do
+      it '新しい配達時間帯を作成' do
         expect {
           post admin_delivery_periods_url, params: { delivery_period: valid_attributes }
         }.to change(DeliveryPeriod, :count).by(1)
       end
 
-      it "redirects to the created delivery_period" do
+      it '新しい配達時間帯作成後のリダイレクト' do
         post admin_delivery_periods_url, params: { delivery_period: valid_attributes }
         expect(response).to redirect_to(admin_delivery_periods_url)
       end
     end
 
-    context "with invalid parameters" do
+    context '不正パラメータを入力' do
       it "does not create a new DeliveryPeriod" do
         expect {
           post admin_delivery_periods_url, params: { delivery_period: invalid_attributes }
         }.to change(DeliveryPeriod, :count).by(0)
       end
 
-      it "renders a successful response (i.e. to display the 'new' template)" do
+      it 'newテンプレートでレンダリングして成功応答' do
         post admin_delivery_periods_url, params: { delivery_period: invalid_attributes }
         expect(response).to be_successful
       end
@@ -76,7 +76,7 @@ RSpec.describe "/delivery_periods", type: :request do
   end
 
   describe "PATCH /update" do
-    context "with valid parameters" do
+    context '正常パラメータを入力' do
       let(:new_attributes) {
         {hour_to: 21}
       }
@@ -96,8 +96,8 @@ RSpec.describe "/delivery_periods", type: :request do
       end
     end
 
-    context "with invalid parameters" do
-      it "renders a successful response (i.e. to display the 'edit' template)" do
+    context '不正パラメータを入力' do
+      it 'editテンプレートでレンダリングして成功応答' do
         delivery_period = DeliveryPeriod.create! valid_attributes
         patch admin_delivery_period_url(delivery_period), params: { delivery_period: invalid_attributes }
         expect(response).to be_successful

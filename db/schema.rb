@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_07_171133) do
+ActiveRecord::Schema.define(version: 2020_07_20_171513) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -43,11 +43,53 @@ ActiveRecord::Schema.define(version: 2020_07_07_171133) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "comments", force: :cascade do |t|
+    t.text "content"
+    t.bigint "user_id", null: false
+    t.bigint "diary_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["diary_id"], name: "index_comments_on_diary_id"
+    t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
+  create_table "coupons", force: :cascade do |t|
+    t.string "coupon_code"
+    t.bigint "admin_id", null: false
+    t.bigint "user_id"
+    t.integer "point", default: 0, null: false
+    t.bigint "order_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["admin_id"], name: "index_coupons_on_admin_id"
+    t.index ["order_id"], name: "index_coupons_on_order_id"
+    t.index ["user_id"], name: "index_coupons_on_user_id"
+  end
+
   create_table "delivery_periods", force: :cascade do |t|
     t.integer "hour_from", null: false
     t.integer "hour_to", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "diaries", force: :cascade do |t|
+    t.text "content"
+    t.bigint "user_id", null: false
+    t.string "picture"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_diaries_on_user_id"
+  end
+
+  create_table "goods", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "diary_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["diary_id"], name: "index_goods_on_diary_id"
+    t.index ["user_id", "diary_id"], name: "index_goods_on_user_id_and_diary_id", unique: true
+    t.index ["user_id"], name: "index_goods_on_user_id"
   end
 
   create_table "items", force: :cascade do |t|
@@ -106,12 +148,22 @@ ActiveRecord::Schema.define(version: 2020_07_07_171133) do
     t.string "address"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "nickname"
+    t.string "picture"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
   add_foreign_key "cart_items", "items"
   add_foreign_key "cart_items", "users"
+  add_foreign_key "comments", "diaries"
+  add_foreign_key "comments", "users"
+  add_foreign_key "coupons", "admins"
+  add_foreign_key "coupons", "orders"
+  add_foreign_key "coupons", "users"
+  add_foreign_key "diaries", "users"
+  add_foreign_key "goods", "diaries"
+  add_foreign_key "goods", "users"
   add_foreign_key "order_items", "items"
   add_foreign_key "order_items", "orders"
   add_foreign_key "orders", "delivery_periods"

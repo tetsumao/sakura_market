@@ -19,7 +19,7 @@ RSpec.describe "/cart_items", type: :request do
   let(:invalid_attributes) { {user_id: user.id, item_id: item.id, quantity: 0} }
 
   describe "GET /index" do
-    it "renders a successful response" do
+    it '成功した応答をレンダリング' do
       CartItem.create! valid_attributes
       get cart_items_url
       expect(response).to be_successful
@@ -27,27 +27,27 @@ RSpec.describe "/cart_items", type: :request do
   end
 
   describe "POST /create" do
-    context "with valid parameters" do
-      it "creates a new CartItem" do
+    context '正常パラメータを入力' do
+      it '新しいショッピングカート作成' do
         expect {
           post cart_items_url, params: { cart_item: valid_attributes }
         }.to change(CartItem, :count).by(1)
       end
 
-      it "redirects to the created cart_item" do
+      it 'ショッピングカート作成後のリダイレクト' do
         post cart_items_url, params: { cart_item: valid_attributes }
         expect(response).to redirect_to(items_path)
       end
     end
 
-    context "with invalid parameters" do
-      it "does not create a new CartItem" do
+    context '不正パラメータを入力' do
+      it '新しいショッピングカートを作成できない' do
         expect {
           post cart_items_url, params: { cart_item: invalid_attributes }
         }.to change(CartItem, :count).by(0)
       end
 
-      it "renders a successful response (i.e. to display the 'new' template)" do
+      it 'newテンプレートでレンダリングして成功応答' do
         post cart_items_url, params: { cart_item: invalid_attributes }
         expect(response).to redirect_to(item_path(item))
       end
@@ -55,8 +55,8 @@ RSpec.describe "/cart_items", type: :request do
   end
 
   describe "PATCH /update" do
-    context "with valid parameters" do
-      it "updates the requested cart_item" do
+    context '正常パラメータを入力' do
+      it 'ショッピングカートを更新' do
         cart_item = CartItem.create! valid_attributes
         quantity = cart_item.quantity + 1
         patch cart_item_url(cart_item), params: { cart_item: { quantity: quantity } }
@@ -64,7 +64,7 @@ RSpec.describe "/cart_items", type: :request do
         expect(cart_item.quantity).to eq(quantity)
       end
 
-      it "redirects to the cart_item" do
+      it 'ショッピングカート更新後のリダイレクト' do
         cart_item = CartItem.create! valid_attributes
         quantity = cart_item.quantity + 1
         patch cart_item_url(cart_item), params: { cart_item: { quantity: quantity } }
@@ -73,8 +73,8 @@ RSpec.describe "/cart_items", type: :request do
       end
     end
 
-    context "with invalid parameters" do
-      it "renders a successful response (i.e. to display the 'edit' template)" do
+    context '不正パラメータを入力' do
+      it 'editテンプレートでレンダリングして成功応答' do
         cart_item = CartItem.create! valid_attributes
         patch cart_item_url(cart_item), params: { cart_item: { quantity: 0 } }
         expect(response).to redirect_to(cart_items_url)
@@ -83,14 +83,14 @@ RSpec.describe "/cart_items", type: :request do
   end
 
   describe "DELETE /destroy" do
-    it "destroys the requested cart_item" do
+    it '要求されたショッピングカートを削除する' do
       cart_item = CartItem.create! valid_attributes
       expect {
         delete cart_item_url(cart_item)
       }.to change(CartItem, :count).by(-1)
     end
 
-    it "redirects to the cart_items list" do
+    it 'ショッピングカート削除後のリダイレクト' do
       cart_item = CartItem.create! valid_attributes
       delete cart_item_url(cart_item)
       expect(response).to redirect_to(cart_items_url)

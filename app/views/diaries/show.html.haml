@@ -1,0 +1,17 @@
+.alert.alert-light.border-secondary
+  %span
+    - if @diary.user.picture.present?
+      = image_tag @diary.user.picture.url(:icon)
+    %strong
+      = @diary.user.nickname
+    = @diary.created_at.strftime('%Y/%m/%d %H:%M')
+  %pre.lead{style: 'background-color: transparent;'}
+    = @diary.content
+  - if @diary.picture.present?
+    %div
+      = image_tag(@diary.picture.url)
+  %span{class: "good_button_#{@diary.id}", style: "display:inline-flex"}
+    = render 'goods/good_button', diary: @diary
+  %div{class: "comment_line_#{@diary.id}"}
+    = render 'comments/comment_line', {diary: @diary, open: true}
+= link_to "戻る", :back, class: 'btn btn-outline-secondary'

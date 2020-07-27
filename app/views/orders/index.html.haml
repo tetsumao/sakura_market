@@ -10,6 +10,8 @@
       %th{ scope: 'col' } 送料
       %th{ scope: 'col' } 消費税
       %th{ scope: 'col' } 合計金額
+      %th{ scope: 'col' } ポイント利用
+      %th{ scope: 'col' } 請求金額
       %th
   %tbody
     - @orders.each do |order|
@@ -21,5 +23,7 @@
         %td.text-right= number_to_currency(order.shipping_price)
         %td.text-right= number_to_currency(order.tax_price)
         %td.text-right= number_to_currency(order.total_price)
+        %td.text-right= number_to_currency(order.point_price)
+        %td.text-right= number_to_currency(order.invoice_price)
         %td= link_to '詳細', order
 = paginate @orders

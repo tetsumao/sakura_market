@@ -6,5 +6,5 @@
     $('#cartItemSubmit<%= @cart_item.item_id %>').val('カートに入っています').attr('disabled', true);
   }, 0);
 <% else %>
-  toastr.warning('カートに追加できませんでした：<%= @cart_item.errors.full_messages %>');
+  toastr.warning('<%= @cart_item.toastr_error_message("カートに追加できませんでした：") %>');
 <% end %>

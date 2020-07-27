@@ -17,7 +17,7 @@ RSpec.describe "/items", type: :request do
   let(:invalid_attributes) { attributes_for(:item, price: nil) }
 
   describe "GET /index" do
-    it "renders a successful response" do
+    it '成功した応答をレンダリング' do
       Item.create! valid_attributes
       get admin_items_url
       expect(response).to be_successful
@@ -25,7 +25,7 @@ RSpec.describe "/items", type: :request do
   end
 
   describe "GET /show" do
-    it "renders a successful response" do
+    it '成功した応答をレンダリング' do
       item = Item.create! valid_attributes
       get admin_item_url(item)
       expect(response).to be_successful
@@ -33,14 +33,14 @@ RSpec.describe "/items", type: :request do
   end
 
   describe "GET /new" do
-    it "renders a successful response" do
+    it '成功した応答をレンダリング' do
       get new_admin_item_url
       expect(response).to be_successful
     end
   end
 
   describe "GET /edit" do
-    it "render a successful response" do
+    it '成功した応答' do
       item = Item.create! valid_attributes
       get edit_admin_item_url(item)
       expect(response).to be_successful
@@ -48,27 +48,27 @@ RSpec.describe "/items", type: :request do
   end
 
   describe "POST /create" do
-    context "with valid parameters" do
-      it "creates a new Item" do
+    context '正常パラメータを入力' do
+      it '新しい商品を作成' do
         expect {
           post admin_items_url, params: { item: valid_attributes }
         }.to change(Item, :count).by(1)
       end
 
-      it "redirects to the created item" do
+      it '新しい商品作成後のリダイレクト' do
         post admin_items_url, params: { item: valid_attributes }
         expect(response).to redirect_to(admin_items_url)
       end
     end
 
-    context "with invalid parameters" do
+    context '不正パラメータを入力' do
       it "does not create a new Item" do
         expect {
           post admin_items_url, params: { item: invalid_attributes }
         }.to change(Item, :count).by(0)
       end
 
-      it "renders a successful response (i.e. to display the 'new' template)" do
+      it '成功した応答をnewテンプレートからレンダリング' do
         post admin_items_url, params: { item: invalid_attributes }
         expect(response).to be_successful
       end
@@ -76,7 +76,7 @@ RSpec.describe "/items", type: :request do
   end
 
   describe "PATCH /update" do
-    context "with valid parameters" do
+    context '正常パラメータを入力' do
       let(:new_attributes) {
         {price: 9999999}
       }
@@ -96,8 +96,8 @@ RSpec.describe "/items", type: :request do
       end
     end
 
-    context "with invalid parameters" do
-      it "renders a successful response (i.e. to display the 'edit' template)" do
+    context '不正パラメータを入力' do
+      it 'editテンプレートでレンダリングして成功応答' do
         item = Item.create! valid_attributes
         patch admin_item_url(item), params: { item: invalid_attributes }
         expect(response).to be_successful

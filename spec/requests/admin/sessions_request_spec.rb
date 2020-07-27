@@ -12,7 +12,7 @@ RSpec.describe "Admin::Sessions", type: :request do
   end
 
   describe "POST /create" do
-    context "with valid parameters" do
+    context '正常パラメータを入力' do
       it "管理者ログイン" do
         admin = Admin.create! valid_attributes
         post admin_session_url, params: { admin_login_form: {login_name: admin.login_name, password: 'password'} }
@@ -26,7 +26,7 @@ RSpec.describe "Admin::Sessions", type: :request do
       end
     end
 
-    context "with invalid parameters" do
+    context '不正パラメータを入力' do
       it "管理者ログイン失敗" do
         admin = Admin.create! valid_attributes
         post admin_session_url, params: { admin_login_form: {login_name: admin.login_name, password: 'password1'} }

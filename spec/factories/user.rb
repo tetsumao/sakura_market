@@ -5,5 +5,7 @@ FactoryBot.define do
     sequence(:user_name) { |n| "ユーザ#{n}" }
     sequence(:zip) { |n| format('%03d-%04d', 700 + n, n * 3) }
     sequence(:address) { |n| "住所#{n}" }
+    sequence(:nickname) { |n| "ニックネーム#{n}" }
+    picture{ nil }
   end
 end

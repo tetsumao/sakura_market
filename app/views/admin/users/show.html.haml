@@ -19,6 +19,17 @@
       .card-header 住所
       .card-body= @user.address
 .row.mb-3
+  .col-lg-4
+    .card
+      .card-header ニックネーム
+      .card-body= @user.nickname
+  .col-lg-8
+    .card
+      .card-header プロフィール画像
+      .card-body
+        - if @user.picture.present?
+          .text-center= image_tag @user.picture.url
+.row.mb-3
   .col-lg-2
     .card
       .card-header サインイン回数

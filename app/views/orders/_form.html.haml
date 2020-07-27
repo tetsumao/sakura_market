@@ -1,7 +1,20 @@
 -# frozen_string_literal: true
-= simple_form_for(@order) do |f|
+= simple_form_for(@order, url: confirm_orders_path) do |f|
   = f.error_notification
   = f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present?
+
+  %h3 ポイントの利用（#{current_user.coupon_point} ポイント利用可能）
+  .row
+    .col-lg-3
+      = radio_button_tag :coupon_use, 0, @coupon_use == 0
+      = label_tag :coupon_use_0, '利用しない'
+    .col-lg-3
+      = radio_button_tag :coupon_use, 1, @coupon_use == 1
+      = label_tag :coupon_use_1, '利用できるだけ利用する'
+    .col-lg-6
+      = radio_button_tag :coupon_use, 2, @coupon_use == 2
+      = label_tag :coupon_use_2, '利用ポイント数を入力する'
+      = number_field_tag :coupon_use_point, @coupon_use_point, min: 1, max: [current_user.coupon_point, @order.total_price].min
 
   .row
     .col-lg-3
@@ -18,4 +31,4 @@
         = label_tag :update_ship, '配達先で住所情報を更新'
 
   .form-actions.text-center
-    = f.button :submit, '注文を確定する', class: 'btn btn-danger btn-lg'
+    = f.button :submit, '注文を確認する', class: 'btn btn-secondary btn-lg'

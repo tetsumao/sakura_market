@@ -1,0 +1,8 @@
+<% unless @comment.errors.any? %>
+  $('.comment_button_<%= @comment.diary_id %>').html("<%=j render 'comment_button', {diary: @comment.diary, open: true} %>");
+  $('.comment_count_<%= @comment.diary_id %>').html("<%=j render 'comment_count', {diary: @comment.diary} %>");
+  $('.comment_line_<%= @comment.diary_id %>').html("<%=j render 'comment_line', {diary: @comment.diary, open: true} %>");
+  toastr.info('コメント しました。');
+<% else %>
+  toastr.warning('<%= @comment.toastr_error_message("コメントできませんでした：") %>');
+<% end %>

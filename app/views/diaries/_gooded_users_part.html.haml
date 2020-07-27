@@ -1,0 +1,6 @@
+- diary.gooded_users.each do |user|
+  %div
+    %span
+      - if user.picture.present?
+        = image_tag user.picture.url(:icon)
+      %strong= user.nickname

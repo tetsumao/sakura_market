@@ -1,0 +1,60 @@
+%h2 日記タイムライン
+
+%button.btn.btn-primary{ type: 'button', 'data-toggle': 'modal', 'data-target': '#diaryDialog' }
+  %i.far.fa-window-maximize
+  日記投稿
+
+- @diaries.each do |diary|
+  .alert.alert-light.border-secondary
+    %span
+      - if diary.user.picture.present?
+        = image_tag diary.user.picture.url(:icon)
+      %strong
+        = diary.user.nickname
+      = link_to diary.created_at.strftime('%Y/%m/%d %H:%M'), diary_path(diary)
+    %pre.lead{style: 'background-color: transparent;'}
+      = diary.content
+    - if diary.picture.present?
+      %div
+        = link_to image_tag(diary.picture.url), diary_path(diary.id), target: "_blank"
+    %span{class: "good_button_#{diary.id}", style: "display:inline-flex"}
+      = render 'goods/good_button', diary: diary
+    %span{class: "comment_button_#{diary.id}", style: "display:inline-flex"}
+      = render 'comments/comment_button', {diary: diary, open: false}
+    %div{class: "comment_line_#{diary.id}"}
+      = render 'comments/comment_line', {diary: diary, open: false}
+= paginate @diaries
+
+-# 日記投稿ダイアログ
+- if user_signed_in?
+  .modal.fade#diaryDialog{tabindex: -1, role: 'dialog', 'aria-labelledby': 'diaryDialogLabel', 'aria-hidden': 'true'}
+    .modal-dialog{role: 'document'}
+      .modal-content
+        = form_with model: Diary.new, remote: true do |f|
+          .modal-header
+            %h5.modal-title#diaryDialogLabel
+              日記投稿フォーム
+            %button.close{type: 'button', 'data-dismiss': 'modal', 'aria-label': 'Close'}
+              %span{'aria-hidden': 'true'}
+                &times;
+          .modal-body
+            #error_explanation{style: 'display: none'}
+              %h2
+              %ul
+            .field
+              = f.text_area :content, size: "50x3", class: 'form-control'
+            .field
+              = f.file_field :picture, class: 'image'
+          .modal-footer
+            = f.submit '投稿する', class: 'btn btn-primary'
+            %button.btn.btn-secondary{type: 'button', 'data-dismiss': 'modal'}
+              閉じる
+:javascript
+  $(function() {
+    $('#diaryDialog').on('hide.bs.modal', function (event) {
+      $('#diary_content').val('');
+      $('#diary_picture').val('');
+    });
+  });
+
+= render 'goods/good_dialog'

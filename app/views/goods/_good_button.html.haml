@@ -1,0 +1,7 @@
+- if current_user.gooding_diary?(diary)
+  = button_to 'Good!中', diary_good_path(diary, current_user.goods.find_by(diary: diary)), class: 'btn btn-primary btn-sm', method: :delete, remote: true
+- else
+  = button_to 'Good!', diary_goods_path(diary), class: 'btn btn-outline-primary btn-sm', method: :post, remote: true
+- if diary.goods.count > 0
+  %button.btn.badge.badge-outline-primary{ type: 'button', value: diary.id, 'data-toggle': 'modal', 'data-target': '#goodedUserDialog' }
+    = diary.goods.count

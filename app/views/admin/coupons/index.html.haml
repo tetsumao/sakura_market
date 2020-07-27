@@ -1,0 +1,28 @@
+%h2 クーポン一覧
+
+%table.table
+  %thead.thead-dark
+    %tr
+      %th{ scope: 'col' } ID
+      %th{ scope: 'col' } クーポンコード
+      %th{ scope: 'col' } 発行した管理者
+      %th{ scope: 'col' } 付与したユーザ
+      %th{ scope: 'col' } ポイント数
+      %th
+      %th
+      %th
+
+  %tbody
+    - @coupons.each do |coupon|
+      %tr
+        %td= coupon.id
+        %td= coupon.display_coupon_code
+        %td= coupon.admin.admin_name
+        %td= coupon.user.present? ? coupon.user.user_name : '-'
+        %td= coupon.point
+        %td= link_to '表示', admin_coupon_path(coupon), class: 'btn btn-outline-dark btn-sm'
+        %td= link_to '編集', edit_admin_coupon_path(coupon), class: 'btn btn-outline-info btn-sm'
+        %td= link_to '削除', admin_coupon_path(coupon), class: 'btn btn-danger btn-sm', method: :delete, data: { confirm: '削除してよろしいですか？' }
+= paginate @coupons
+
+= link_to '新しいクーポン', new_admin_coupon_path, class: 'btn btn-primary'

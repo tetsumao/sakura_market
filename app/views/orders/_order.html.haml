@@ -35,3 +35,32 @@
         %tr
           %th 合計金額
           %td.text-right= number_to_currency(@order.total_price)
+        - if with_point_and_delivery
+          %tr
+            %th ポイント利用
+            %td.text-right= number_to_currency(@order.point_price)
+          %tr
+            %th 請求金額
+            %td.text-right= number_to_currency(@order.invoice_price)
+- if with_point_and_delivery
+  .row
+    .col-lg-3
+      %h3 配達希望日時
+      %table.table.table-bordered
+        %thead.thead-light
+          %tr
+            %th 配達希望日
+            %td.text-center= @order.delivery_date.strftime('%Y/%m/%d')
+          %tr
+            %th 配達希望時間帯
+            %td.text-center= @order.delivery_period.period_name
+    .col-lg-9
+      %h3 配達先
+      %table.table.table-bordered
+        %thead.thead-light
+          %tr
+            %th 郵便番号
+            %td= @order.ship_zip
+          %tr
+            %th 住所
+            %td= @order.ship_address

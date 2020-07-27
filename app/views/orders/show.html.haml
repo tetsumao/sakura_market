@@ -1,27 +1,5 @@
-%h2= "注文日：#{@order.created_at.strftime('%Y/%m/%d')}"
+%h2= "購入履歴（注文日：#{@order.created_at.strftime('%Y/%m/%d')}）"
 
-= render 'order'
+= render 'order', with_point_and_delivery: true
 
-.row
-  .col-lg-3
-    %h3 配達希望日時
-    %table.table.table-bordered
-      %thead.thead-light
-        %tr
-          %th 配達希望日
-          %td.text-center= @order.delivery_date.strftime('%Y/%m/%d')
-        %tr
-          %th 配達希望時間帯
-          %td.text-center= @order.delivery_period.period_name
-  .col-lg-9
-    %h3 配達先
-    %table.table.table-bordered
-      %thead.thead-light
-        %tr
-          %th 郵便番号
-          %td= @order.ship_zip
-        %tr
-          %th 住所
-          %td= @order.ship_address
-
-= link_to "戻る", orders_path, class: 'btn btn-outline-secondary'
+= link_to '購入履歴へ戻る', orders_path, class: 'btn btn-outline-secondary'

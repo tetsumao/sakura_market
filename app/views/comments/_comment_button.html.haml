@@ -1,0 +1,8 @@
+= form_with url: switch_comments_path, remote: true do |f|
+  = f.hidden_field :diary_id, value: diary.id, id: ''
+  = f.hidden_field :open, value: !open, id: ''
+  %button.btn.btn-outline-info.btn-sm{ type: 'submit', class: ('active' if open) }
+    = open ? '▲コメント' : '▼コメント'
+    - if diary.comments.count > 0
+      %span.badge.badge-outline-info
+        = diary.comments.count

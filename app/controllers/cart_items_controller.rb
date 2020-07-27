@@ -5,7 +5,7 @@ class CartItemsController < ApplicationController
   def index
     @cart_items = current_user.cart_items.eager_load(:item)
     if @cart_items.empty?
-      redirect_to root_path, notice: 'カートに商品がありません。'
+      redirect_to items_url, notice: 'カートに商品がありません。'
     end
   end
 
@@ -16,7 +16,7 @@ class CartItemsController < ApplicationController
         format.html { redirect_to items_path, notice: "#{@cart_item.item.item_name} x #{@cart_item.quantity} をカートに追加しました。" }
         format.js
       else
-        format.html { redirect_to @cart_item.item, alert: "カートに追加できませんでした：#{@cart_item.errors.full_messages}" }
+        format.html { redirect_to @cart_item.item, alert: @cart_item.toastr_error_message('カートに追加できませんでした：') }
         format.js
       end
     end

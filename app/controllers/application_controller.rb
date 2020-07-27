@@ -5,20 +5,20 @@ class ApplicationController < ActionController::Base
 
   protected
     def configure_permitted_parameters
-      devise_parameter_sanitizer.permit(:sign_up, keys: [:user_name, :zip, :address])
-      devise_parameter_sanitizer.permit(:account_update, keys: [:email, :user_name, :zip, :address])
+      devise_parameter_sanitizer.permit(:sign_up, keys: [:user_name, :zip, :address, :nickname, :picture])
+      devise_parameter_sanitizer.permit(:account_update, keys: [:email, :user_name, :zip, :address, :nickname, :picture])
     end
 
   private
-  def set_layout
-    if params[:controller].match(%r{\A(admin)/})
-      'admin'
-    else
-      'user'
+    def set_layout
+      if params[:controller].match(%r{\A(admin)/})
+        'admin'
+      else
+        'user'
+      end
     end
-  end
 
-  def production?
+    def production?
       Rails.env.production?
     end
 

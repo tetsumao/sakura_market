@@ -18,13 +18,24 @@
             %span.navbar-toggler-icon
           .collapse.navbar-collapse#navbarNavDropdown
             %ul.navbar-nav.mr-auto
+              %li.nav-item
+                %a.nav-link{href: root_path}
+                  日記を見る
+              %li.nav-item
+                %a.nav-link{href: items_path}
+                  ショッピング
               - if user_signed_in?
                 %li.nav-item
-                  %a.nav-link{href: cart_items_path, class: 'btn page-link text-dark d-inline-block'}
+                  %a.nav-link.btn.page-link.text-primary.d-inline-block{href: cart_items_path}
                     ショッピングカート：
                     %span#cartItemCount
                       = current_user.cart_items.quantity
                     品
+                %li.nav-item
+                  %a.nav-link.btn.page-link.text-success.d-inline-block{href: coupons_path}
+                    クーポン：
+                    = current_user.coupon_point
+                    ポイント
                 %li.nav-item
                   %a.nav-link{href: orders_path}
                     購入履歴
