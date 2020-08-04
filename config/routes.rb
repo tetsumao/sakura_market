@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root "diaries#index"
+  root 'diaries#index'
   resources :items, only: [:index, :show]
   resources :orders, only: [:index, :show, :new, :create] do
     collection do
@@ -26,7 +26,7 @@ Rails.application.routes.draw do
   }
 
   namespace :admin do
-    root "items#index"
+    root 'items#index'
     get :login, to: 'sessions#new'
     resource :session, only: [:create, :destroy]
     resources :items
@@ -35,5 +35,14 @@ Rails.application.routes.draw do
     resources :users, only: [:index, :show, :edit, :update, :destroy]
     resources :coupons
     resources :admins
+    resources :traders
+  end
+
+  namespace :trader do
+    root 'stocks#index'
+    get :login, to: 'sessions#new'
+    resource :session, only: [:create, :destroy]
+    resources :stocks
+    resources :orders, only: [:index, :show]
   end
 end

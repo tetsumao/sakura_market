@@ -11,8 +11,11 @@ class ApplicationController < ActionController::Base
 
   private
     def set_layout
-      if params[:controller].match(%r{\A(admin)/})
+      controller = params[:controller]
+      if controller.match(%r{\A(admin)/})
         'admin'
+      elsif controller.match(%r{\A(trader)/})
+        'trader'
       else
         'user'
       end

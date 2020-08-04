@@ -62,7 +62,7 @@ RSpec.describe "/charges", type: :request do
     end
 
     context '不正パラメータを入力' do
-      it "does not create a new Charge" do
+      it '新しい代引き手数料を作成できない' do
         expect {
           post admin_charges_url, params: { charge: invalid_attributes }
         }.to change(Charge, :count).by(0)
@@ -81,14 +81,14 @@ RSpec.describe "/charges", type: :request do
         {charge: 999}
       }
 
-      it "updates the requested charge" do
+      it '要求された代引き手数料を更新' do
         charge = Charge.create! valid_attributes
         patch admin_charge_url(charge), params: { charge: new_attributes }
         charge.reload
         expect(charge.charge).to eq(999)
       end
 
-      it "redirects to the charge" do
+      it '代引き手数料更新後のリダイレクト' do
         charge = Charge.create! valid_attributes
         patch admin_charge_url(charge), params: { charge: new_attributes }
         charge.reload
@@ -106,14 +106,14 @@ RSpec.describe "/charges", type: :request do
   end
 
   describe "DELETE /destroy" do
-    it "destroys the requested charge" do
+    it '要求された代引き手数料を削除' do
       charge = Charge.create! valid_attributes
       expect {
         delete admin_charge_url(charge)
       }.to change(Charge, :count).by(-1)
     end
 
-    it "redirects to the charges list" do
+    it '代引き手数料削除後のリダイレクト' do
       charge = Charge.create! valid_attributes
       delete admin_charge_url(charge)
       expect(response).to redirect_to(admin_charges_url)

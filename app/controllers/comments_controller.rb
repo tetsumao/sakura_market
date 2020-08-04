@@ -1,5 +1,5 @@
 class CommentsController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: [:switch]
 
   def create
     @comment = current_user.comments.build(comment_params)

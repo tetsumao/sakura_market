@@ -46,14 +46,14 @@ RSpec.describe "Admin::Users", type: :request do
         {email: 'abc@example.com'}
       }
 
-      it "updates the requested user" do
+      it '要求されたユーザを更新' do
         user = User.create! valid_attributes
         patch admin_user_url(user), params: { user: new_attributes }
         user.reload
         expect(user.email).to eq('abc@example.com')
       end
 
-      it "redirects to the user" do
+      it 'ユーザ更新後のリダイレクト' do
         user = User.create! valid_attributes
         patch admin_user_url(user), params: { user: new_attributes }
         user.reload
@@ -71,14 +71,14 @@ RSpec.describe "Admin::Users", type: :request do
   end
 
   describe "DELETE /destroy" do
-    it "destroys the requested user" do
+    it '要求されたユーザを削除' do
       user = User.create! valid_attributes
       expect {
         delete admin_user_url(user)
       }.to change(User, :count).by(-1)
     end
 
-    it "redirects to the users list" do
+    it 'ユーザ削除後のリダイレクト' do
       user = User.create! valid_attributes
       delete admin_user_url(user)
       expect(response).to redirect_to(admin_users_url)

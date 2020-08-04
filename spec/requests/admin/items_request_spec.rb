@@ -62,7 +62,7 @@ RSpec.describe "/items", type: :request do
     end
 
     context '不正パラメータを入力' do
-      it "does not create a new Item" do
+      it '新しい商品を作成できない' do
         expect {
           post admin_items_url, params: { item: invalid_attributes }
         }.to change(Item, :count).by(0)
@@ -81,14 +81,14 @@ RSpec.describe "/items", type: :request do
         {price: 9999999}
       }
 
-      it "updates the requested item" do
+      it '要求された商品を更新' do
         item = Item.create! valid_attributes
         patch admin_item_url(item), params: { item: new_attributes }
         item.reload
         expect(item.price).to eq(9999999)
       end
 
-      it "redirects to the item" do
+      it '商品更新後のリダイレクト' do
         item = Item.create! valid_attributes
         patch admin_item_url(item), params: { item: new_attributes }
         item.reload
@@ -106,14 +106,14 @@ RSpec.describe "/items", type: :request do
   end
 
   describe "DELETE /destroy" do
-    it "destroys the requested item" do
+    it '要求された商品を削除' do
       item = Item.create! valid_attributes
       expect {
         delete admin_item_url(item)
       }.to change(Item, :count).by(-1)
     end
 
-    it "redirects to the items list" do
+    it '商品削除後のリダイレクト' do
       item = Item.create! valid_attributes
       delete admin_item_url(item)
       expect(response).to redirect_to(admin_items_url)

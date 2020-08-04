@@ -10,39 +10,44 @@
           %th{ scope: 'col' } 価格
 
       %tbody
-        - @order.order_items.each do |order_item|
+        - order.order_items.each do |order_item|
           %tr
             %td.align-middle= order_item.item_name
             %td.align-middle.text-right= number_to_currency(order_item.price)
             %td.align-middle.text-right= order_item.quantity
             %td.align-middle.text-right= number_to_currency(order_item.price * order_item.quantity)
+    %br
+    - if order_display_mode == :trader
+      %h3 購入者名：#{order.user.user_name}
+    - else
+      %h3 販売元業者：#{order.trader.trader_name}
   .col-lg-4
     %h3 請求金額
     %table.table.table-bordered
       %thead.thead-light
         %tr
           %th 商品金額
-          %td.text-right= number_to_currency(@order.item_price)
+          %td.text-right= number_to_currency(order.item_price)
         %tr
           %th 代引き手数料
-          %td.text-right= number_to_currency(@order.charge_price)
+          %td.text-right= number_to_currency(order.charge_price)
         %tr
           %th 送料
-          %td.text-right= number_to_currency(@order.shipping_price)
+          %td.text-right= number_to_currency(order.shipping_price)
         %tr
           %th 消費税
-          %td.text-right= number_to_currency(@order.tax_price)
+          %td.text-right= number_to_currency(order.tax_price)
         %tr
           %th 合計金額
-          %td.text-right= number_to_currency(@order.total_price)
-        - if with_point_and_delivery
+          %td.text-right= number_to_currency(order.total_price)
+        - if order_display_mode != :not_entered
           %tr
             %th ポイント利用
-            %td.text-right= number_to_currency(@order.point_price)
+            %td.text-right= number_to_currency(order.point_price)
           %tr
             %th 請求金額
-            %td.text-right= number_to_currency(@order.invoice_price)
-- if with_point_and_delivery
+            %td.text-right= number_to_currency(order.invoice_price)
+- if order_display_mode != :not_entered
   .row
     .col-lg-3
       %h3 配達希望日時
@@ -50,17 +55,17 @@
         %thead.thead-light
           %tr
             %th 配達希望日
-            %td.text-center= @order.delivery_date.strftime('%Y/%m/%d')
+            %td.text-center= order.delivery_date.strftime('%Y/%m/%d')
           %tr
             %th 配達希望時間帯
-            %td.text-center= @order.delivery_period.period_name
+            %td.text-center= order.delivery_period.period_name
     .col-lg-9
       %h3 配達先
       %table.table.table-bordered
         %thead.thead-light
           %tr
             %th 郵便番号
-            %td= @order.ship_zip
+            %td= order.ship_zip
           %tr
             %th 住所
-            %td= @order.ship_address
+            %td= order.ship_address

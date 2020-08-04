@@ -1,5 +1,5 @@
 class DiariesController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: [:index, :show]
 
   def index
     @diaries = Diary.includes(:user).page(params[:page]).per(20).order(created_at: :desc)

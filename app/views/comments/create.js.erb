@@ -4,5 +4,5 @@
   $('.comment_line_<%= @comment.diary_id %>').html("<%=j render 'comment_line', {diary: @comment.diary, open: true} %>");
   toastr.info('コメント しました。');
 <% else %>
-  toastr.warning('<%= @comment.toastr_error_message("コメントできませんでした：") %>');
+  toastr.warning('<%= raw @comment.toastr_error_message("コメントできませんでした：") %>');
 <% end %>

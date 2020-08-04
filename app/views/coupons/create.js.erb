@@ -2,7 +2,7 @@
   <% unless @coupon.errors.any? %>
     toastr.info('<%= @coupon.point %> ポイント獲得しました。');
   <% else %>
-    toastr.warning('<%= @coupon.toastr_error_message("クーポンを獲得できませんでした：") %>');
+    toastr.warning('<%= raw @coupon.toastr_error_message("クーポンを獲得できませんでした：") %>');
   <% end %>
 <% else %>
   toastr.error('入力されたクーポンコードは存在しないか使用済みです。');

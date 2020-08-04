@@ -9,8 +9,9 @@
         = comment.created_at.strftime('%Y/%m/%d %H:%M')
       %pre{style: 'background-color: transparent;'}
         = comment.content
-  = form_with model: Comment.new, remote: true do |f|
-    .field
-      = f.hidden_field :diary_id, value: diary.id, id: ''
-      = f.text_area :content, size: "50x2", class: 'form-control', id: ''
-      = f.submit 'コメントする', class: 'btn btn-info'
+  - if user_signed_in?
+    = form_with model: Comment.new, remote: true do |f|
+      .field
+        = f.hidden_field :diary_id, value: diary.id, id: ''
+        = f.text_area :content, size: "50x2", class: 'form-control', id: ''
+        = f.submit 'コメントする', class: 'btn btn-info'

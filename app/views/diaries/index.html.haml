@@ -1,8 +1,9 @@
 %h2 日記タイムライン
 
-%button.btn.btn-primary{ type: 'button', 'data-toggle': 'modal', 'data-target': '#diaryDialog' }
-  %i.far.fa-window-maximize
-  日記投稿
+- if user_signed_in?
+  %button.btn.btn-primary{ type: 'button', 'data-toggle': 'modal', 'data-target': '#diaryDialog' }
+    %i.far.fa-window-maximize
+    日記投稿
 
 - @diaries.each do |diary|
   .alert.alert-light.border-secondary
@@ -17,8 +18,9 @@
     - if diary.picture.present?
       %div
         = link_to image_tag(diary.picture.url), diary_path(diary.id), target: "_blank"
-    %span{class: "good_button_#{diary.id}", style: "display:inline-flex"}
-      = render 'goods/good_button', diary: diary
+    - if user_signed_in?
+      %span{class: "good_button_#{diary.id}", style: "display:inline-flex"}
+        = render 'goods/good_button', diary: diary
     %span{class: "comment_button_#{diary.id}", style: "display:inline-flex"}
       = render 'comments/comment_button', {diary: diary, open: false}
     %div{class: "comment_line_#{diary.id}"}

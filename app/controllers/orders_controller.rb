@@ -70,9 +70,9 @@ class OrdersController < ApplicationController
       @update_ship = params[:update_ship].to_i
       use_point = 0
       case @coupon_use
-      when 1
+      when 1 # 全てのポイントを使用
         use_point = current_user.coupon_point
-      when 2
+      when 2 # 指定ポイントを使用
         use_point = @coupon_use_point
       end
 

@@ -1,0 +1,57 @@
+%h2 現在の在庫状況
+
+%table.table
+  %thead.thead-light
+    %tr
+      %th{ scope: 'col' } 商品名
+      %th{ scope: 'col' } 在庫数
+      %th{ scope: 'col' } 商品名
+      %th{ scope: 'col' } 在庫数
+
+  %tbody
+    - length = @items.length
+    - (0..((length-1).div(2))).each do |row_index|
+      - index = row_index * 2
+      %tr
+        - item = @items[index]
+        %td= item.item_name
+        %td= current_trader.item_stock_number(item.id)
+        - index += 1
+        - if index < length
+          - item = @items[index]
+          %td= item.item_name
+          %td= current_trader.item_stock_number(item.id)
+        - else
+          %td
+          %td
+
+%h2 在庫履歴
+
+%table.table
+  %thead.thead-light
+    %tr
+      %th{ scope: 'col' } ID
+      %th{ scope: 'col' } 商品名
+      %th{ scope: 'col' } 在庫数
+      %th{ scope: 'col' } 追加/破棄/注文日時
+      %th
+      %th
+      %th
+
+  %tbody
+    - @stocks.each do |stock|
+      %tr
+        %td= stock.id
+        %td= stock.item.item_name
+        %td= stock.stock_number
+        %td= stock.order.present? ? "注文：#{stock.order.created_at.strftime('%Y/%m/%d %H:%M')}" : "#{stock.stock_number > 0 ? '追加' : '破棄'}：#{stock.created_at.strftime('%Y/%m/%d %H:%M')}"
+        %td= link_to '表示', trader_stock_path(stock), class: 'btn btn-outline-dark btn-sm'
+        - if stock.created_at > @stocks.last_ordered_created_at
+          %td= link_to '編集', edit_trader_stock_path(stock), class: 'btn btn-outline-info btn-sm'
+          %td= link_to '削除', trader_stock_path(stock), class: 'btn btn-danger btn-sm', method: :delete, data: { confirm: '削除してよろしいですか？' }
+        - else
+          %td
+          %td
+= paginate @stocks
+
+= link_to '新しい在庫', new_trader_stock_path, class: 'btn btn-info'

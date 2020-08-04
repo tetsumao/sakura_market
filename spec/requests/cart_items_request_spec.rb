@@ -14,9 +14,10 @@ RSpec.describe "/cart_items", type: :request do
   end
   let(:user) { create(:user) }
   let(:item) { create(:item) }
+  let(:trader) { create(:trader) }
   
-  let(:valid_attributes) { {user_id: user.id, item_id: item.id, quantity: 1} }
-  let(:invalid_attributes) { {user_id: user.id, item_id: item.id, quantity: 0} }
+  let(:valid_attributes) { {user_id: user.id, item_id: item.id, trader_id: trader.id, quantity: 1} }
+  let(:invalid_attributes) { {user_id: user.id, item_id: item.id, trader_id: trader.id, quantity: 0} }
 
   describe "GET /index" do
     it '成功した応答をレンダリング' do
@@ -49,7 +50,7 @@ RSpec.describe "/cart_items", type: :request do
 
       it 'newテンプレートでレンダリングして成功応答' do
         post cart_items_url, params: { cart_item: invalid_attributes }
-        expect(response).to redirect_to(item_path(item))
+        expect(response).to redirect_to(item_path(item, trader_id: trader.id))
       end
     end
   end

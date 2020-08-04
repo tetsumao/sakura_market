@@ -62,7 +62,7 @@ RSpec.describe "/coupons", type: :request do
     end
 
     context '不正パラメータを入力' do
-      it "does not create a new Coupon" do
+      it '新しいクーポンを作成できない' do
         expect {
           post admin_coupons_url, params: { coupon: invalid_attributes }
         }.to change(Coupon, :count).by(0)
@@ -81,14 +81,14 @@ RSpec.describe "/coupons", type: :request do
         {point: 500}
       }
 
-      it "updates the requested coupon" do
+      it '要求されたクーポンを更新' do
         coupon = Coupon.create! valid_attributes
         patch admin_coupon_url(coupon), params: { coupon: new_attributes }
         coupon.reload
         expect(coupon.point).to eq(500)
       end
 
-      it "redirects to the coupon" do
+      it 'クーポン更新後のリダイレクト' do
         coupon = Coupon.create! valid_attributes
         patch admin_coupon_url(coupon), params: { coupon: new_attributes }
         coupon.reload
@@ -106,14 +106,14 @@ RSpec.describe "/coupons", type: :request do
   end
 
   describe "DELETE /destroy" do
-    it "destroys the requested coupon" do
+    it '要求されたクーポンを削除' do
       coupon = Coupon.create! valid_attributes
       expect {
         delete admin_coupon_url(coupon)
       }.to change(Coupon, :count).by(-1)
     end
 
-    it "redirects to the coupons list" do
+    it 'クーポン削除後のリダイレクト' do
       coupon = Coupon.create! valid_attributes
       delete admin_coupon_url(coupon)
       expect(response).to redirect_to(admin_coupons_url)

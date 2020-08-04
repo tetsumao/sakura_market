@@ -1,0 +1,11 @@
+%h2 事業者の詳細
+
+.card-group
+  .card
+    .card-header メールアドレス
+    .card-body= @trader.email
+  .card
+    .card-header 事業者名
+    .card-body= @trader.trader_name
+
+= link_to '戻る', admin_traders_path, class: 'btn btn-outline-secondary'

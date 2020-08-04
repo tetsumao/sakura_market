@@ -1,6 +1,6 @@
 %h2 注文を確認してください
 
-= render 'order', with_point_and_delivery: true
+= render 'order', order: @order, order_display_mode: :user
 .row
   .col-lg-9.offset-lg-3
     = "配達先で住所情報を更新#{(@update_ship == 1) ? 'する' : 'しない'}"

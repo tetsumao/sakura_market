@@ -1,0 +1,15 @@
+-# frozen_string_literal: true
+= simple_form_for(@trader, url: (@trader.new_record? ? admin_traders_path : admin_trader_path(@trader))) do |f|
+  = f.error_notification
+  = f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present?
+
+  .form-inputs
+    = f.input :email
+    - if @trader.new_record?
+      = f.input :password, required: true
+    - else
+      = f.input :password, hint: '変更しないなら空欄にしてください'
+    = f.input :trader_name
+
+  .form-actions.text-center
+    = f.button :submit, class: 'btn btn-primary'

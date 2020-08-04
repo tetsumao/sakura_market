@@ -3,5 +3,5 @@
   .card-body
     %img.card-img-top{ src: @item.picture.url, alt: @item.item_name }
     %p.card-text= @item.description
-  = render 'cart_item_form', item: @item, disabled: @item_ids_in_cart.include?(@item.id), options: {local: true}
+  = render 'cart_item_form', item: @item, trader: @trader, disabled: @item_ids_in_cart.include?(@item.id), options: {local: true}
 = link_to "戻る", :back, class: 'btn btn-outline-secondary'

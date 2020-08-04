@@ -1,0 +1,45 @@
+!!!
+%html
+  %head
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+    %title さくらマーケット (業者)
+    = csrf_meta_tags
+    = csp_meta_tag
+    = stylesheet_pack_tag('application', media: 'all', 'data-turbolinks-track': 'reload') if Rails.env.production?
+    = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
+    = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
+    = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
+  %body{style: 'padding-top: 70px;'}
+    .fixed-top
+      %nav.navbar.navbar-expand-md.bg-mytop.navbar-dark.bg-info
+        .container
+          = link_to 'さくらマーケット(業者)', trader_root_path, class: 'navbar-brand'
+          %button.navbar-toggler{type: 'button', 'data-toggle': 'collapse', 'data-target': '#navbarNavDropdown', 'aria-controls': 'navbarNavDropdown', 'aria-expanded': false, 'aria-label': 'Toggle navigation'}
+            %span.navbar-toggler-icon
+          .collapse.navbar-collapse#navbarNavDropdown
+            - if trader_signed_in?
+              %ul.navbar-nav.mr-auto
+                %li.nav-item
+                  %a.nav-link{href: trader_stocks_path}
+                    在庫
+                %li.nav-item
+                  %a.nav-link{href: trader_orders_path}
+                    注文履歴
+              %ul.navbar-nav
+                %li.nav-item
+                  .nav-link
+                    #{current_trader.trader_name} さん
+                %li.nav-item
+                  %a.nav-link{href: trader_session_path, 'data-method': :delete}
+                    ログアウト
+    .container
+      %header
+        -if flash.notice
+          %script{ type: 'text/javascript' }
+            $(function(){ toastr.info('#{raw flash.notice}'); });
+        -if flash.alert
+          %script{ type: 'text/javascript' }
+            $(function(){ toastr.warning('#{raw flash.alert}'); });
+      = yield
+      %footer
+        .fixed-bottom.bg-mytop &copy; 2020

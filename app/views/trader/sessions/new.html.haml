@@ -1,0 +1,9 @@
+%h2 ログイン
+
+#login-form
+  = simple_form_for(@form, url: trader_session_path) do |f|
+    .form-inputs
+      = f.input :email, label: 'メールアドレス'
+      = f.input :password, label: 'パスワード'
+    .form-actions.text-center
+      = f.submit 'ログイン', class: 'btn btn-info'

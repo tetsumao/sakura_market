@@ -14,6 +14,8 @@ ja:
       comment: 'コメント'
       good: 'Good!'
       coupon: 'クーポン'
+      trader: '業者'
+      stock: '在庫'
     attributes:
       admin:
         login_name: 'ログイン名'
@@ -23,6 +25,7 @@ ja:
       cart_item:
         item: '商品'
         quantity: '数量'
+        trader: '業者'
       charge:
         price_from: '開始価格'
         price_to: '終了価格(未満)'
@@ -52,6 +55,7 @@ ja:
         tax_price: '消費税'
         ship_zip: '郵便番号'
         ship_address: '住所'
+        trader: '業者'
       user:
         email: 'メールアドレス'
         password: 'パスワード'
@@ -80,6 +84,15 @@ ja:
         user: '付与したユーザ'
         point: 'ポイント数'
         order: '使用された注文'
+      trader:
+        email: 'メールアドレス'
+        password: 'パスワード'
+        trader_name: '業者名'
+      stock:
+        rader: '業者'
+        item: '商品'
+        order_item: '注文商品'
+        stock_number: '在庫数'
     errors:
       messages:
         record_invalid: "バリデーションに失敗しました: %{errors}"

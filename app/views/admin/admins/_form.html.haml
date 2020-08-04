@@ -5,7 +5,10 @@
 
   .form-inputs
     = f.input :login_name
-    = f.input :password
+    - if @admin.new_record?
+      = f.input :password, required: true
+    - else
+      = f.input :password, hint: '変更しないなら空欄にしてください'
     = f.input :admin_name
     = f.input :dspo
 

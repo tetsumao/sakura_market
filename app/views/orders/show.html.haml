@@ -1,5 +1,5 @@
 %h2= "購入履歴（注文日：#{@order.created_at.strftime('%Y/%m/%d')}）"
 
-= render 'order', with_point_and_delivery: true
+= render 'order', order: @order, order_display_mode: :user
 
 = link_to '購入履歴へ戻る', orders_path, class: 'btn btn-outline-secondary'

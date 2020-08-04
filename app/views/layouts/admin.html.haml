@@ -21,22 +21,25 @@
               %ul.navbar-nav.mr-auto
                 %li.nav-item
                   %a.nav-link{href: admin_items_path}
-                    商品一覧
+                    商品
                 %li.nav-item
                   %a.nav-link{href: admin_charges_path}
-                    代引き手数料一覧
+                    代引き手数料
                 %li.nav-item
                   %a.nav-link{href: admin_delivery_periods_path}
-                    配達時間帯一覧
+                    配達時間帯
                 %li.nav-item
                   %a.nav-link{href: admin_coupons_path}
-                    クーポン一覧
+                    クーポン
                 %li.nav-item
                   %a.nav-link{href: admin_users_path}
-                    ユーザ一覧
+                    ユーザ
                 %li.nav-item
                   %a.nav-link{href: admin_admins_path}
-                    管理者一覧
+                    管理者
+                %li.nav-item
+                  %a.nav-link{href: admin_traders_path}
+                    業者
               %ul.navbar-nav
                 %li.nav-item
                   %a.nav-link{href: admin_admin_path(current_admin.id)}
@@ -48,10 +51,10 @@
       %header
         -if flash.notice
           %script{ type: 'text/javascript' }
-            $(function(){ toastr.info('#{flash.notice}'); });
+            $(function(){ toastr.info('#{raw flash.notice}'); });
         -if flash.alert
           %script{ type: 'text/javascript' }
-            $(function(){ toastr.warning('#{flash.alert}'); });
+            $(function(){ toastr.warning('#{raw flash.alert}'); });
       = yield
       %footer
         .fixed-bottom.bg-mytop &copy; 2020

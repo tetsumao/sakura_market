@@ -58,10 +58,10 @@
       %header
         -if flash.notice
           %script{ type: 'text/javascript' }
-            $(function(){ toastr.info('#{flash.notice}'); });
+            $(function(){ toastr.info('#{raw flash.notice}'); });
         -if flash.alert
           %script{ type: 'text/javascript' }
-            $(function(){ toastr.warning('#{flash.alert}'); });
+            $(function(){ toastr.warning('#{raw flash.alert}'); });
       = yield
       %footer
         .fixed-bottom.bg-mytop &copy; 2020

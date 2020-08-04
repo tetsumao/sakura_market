@@ -59,7 +59,7 @@ RSpec.describe "/admin/admins", type: :request do
     end
 
     context '不正パラメータを入力' do
-      it "does not create a new Admin" do
+      it '新しい管理者を作成できない' do
         expect {
           post admin_admins_url, params: { admin: invalid_attributes }
         }.to change(Admin, :count).by(0)
@@ -77,13 +77,13 @@ RSpec.describe "/admin/admins", type: :request do
       let(:new_attributes) {
         {login_name: 'loglog'}
       }
-      it "updates the requested admin" do
+      it '要求された管理者を更新' do
         patch admin_admin_url(admin), params: { admin: new_attributes }
         admin.reload
         expect(admin.login_name).to eq('loglog')
       end
 
-      it "redirects to the admin" do
+      it '管理者更新後のリダイレクト' do
         patch admin_admin_url(admin), params: { admin: new_attributes }
         admin.reload
         expect(response).to redirect_to(admin_admins_url)
@@ -99,13 +99,13 @@ RSpec.describe "/admin/admins", type: :request do
   end
 
   describe "DELETE /destroy" do
-    it "destroys the requested admin" do
+    it '要求された管理者を削除' do
       expect {
         delete admin_admin_url(admin)
       }.to change(Admin, :count).by(-1)
     end
 
-    it "redirects to the admins list" do
+    it '管理者削除後のリダイレクト' do
       delete admin_admin_url(admin)
       expect(response).to redirect_to(admin_admins_url)
     end

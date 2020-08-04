@@ -12,6 +12,7 @@ RSpec.describe "/orders", type: :request do
         }
       }
   end
+  let(:trader) { create(:trader) }
   let(:user) { create(:user) }
   let(:item) { create(:item) }
   let(:delivery_period) { create(:delivery_period) }
@@ -19,6 +20,7 @@ RSpec.describe "/orders", type: :request do
   let(:full_valid_attributes) {
     {
       user_id: user.id,
+      trader_id: trader.id,
       delivery_date: Date.today,
       delivery_period_id: delivery_period.id,
       item_price: item.price,
@@ -64,7 +66,8 @@ RSpec.describe "/orders", type: :request do
 
   describe "GET /new" do
     it '成功した応答をレンダリング' do
-      user.cart_items.create!(item_id: item.id, quantity: 1)
+      trader.stocks.create!(item: item, stock_number: 1)
+      user.cart_items.create!(item: item, trader: trader, quantity: 1)
       Charge.create!(charge: 100)
       get new_order_url
       expect(response).to be_successful
@@ -74,7 +77,8 @@ RSpec.describe "/orders", type: :request do
   describe "POST /confirm" do
     context '正常パラメータを入力' do
       it "新しい注文の確認(パラメータ正常)" do
-        user.cart_items.create!(item_id: item.id, quantity: 1)
+        trader.stocks.create!(item: item, stock_number: 1)
+        user.cart_items.create!(item: item, trader: trader, quantity: 1)
         Charge.create!(charge: 100)
         expect {
           post confirm_orders_url, params: { order: valid_attributes }
@@ -82,7 +86,8 @@ RSpec.describe "/orders", type: :request do
       end
 
       it '成功した応答をレンダリング' do
-        user.cart_items.create!(item_id: item.id, quantity: 1)
+        trader.stocks.create!(item: item, stock_number: 1)
+        user.cart_items.create!(item: item, trader: trader, quantity: 1)
         Charge.create!(charge: 100)
         post confirm_orders_url, params: { order: valid_attributes }
         expect(response).to be_successful
@@ -91,7 +96,8 @@ RSpec.describe "/orders", type: :request do
 
     context '不正パラメータを入力' do
       it "新しい注文の確認(パラメータ異常)" do
-        user.cart_items.create!(item_id: item.id, quantity: 1)
+        trader.stocks.create!(item: item, stock_number: 1)
+        user.cart_items.create!(item: item, trader: trader, quantity: 1)
         Charge.create!(charge: 100)
         expect {
           post confirm_orders_url, params: { order: invalid_attributes }
@@ -99,7 +105,8 @@ RSpec.describe "/orders", type: :request do
       end
 
       it '成功した応答をレンダリング' do
-        user.cart_items.create!(item_id: item.id, quantity: 1)
+        trader.stocks.create!(item: item, stock_number: 1)
+        user.cart_items.create!(item: item, trader: trader, quantity: 1)
         Charge.create!(charge: 100)
         post confirm_orders_url, params: { order: invalid_attributes }
         expect(response).to be_successful
@@ -110,7 +117,8 @@ RSpec.describe "/orders", type: :request do
   describe "POST /create" do
     context '正常パラメータを入力' do
       it '新しい注文を作成' do
-        user.cart_items.create!(item_id: item.id, quantity: 1)
+        trader.stocks.create!(item: item, stock_number: 1)
+        user.cart_items.create!(item: item, trader: trader, quantity: 1)
         Charge.create!(charge: 100)
         expect {
           post orders_url, params: { order: valid_attributes }
@@ -118,7 +126,8 @@ RSpec.describe "/orders", type: :request do
       end
 
       it '新しい注文作成後のリダイレクト' do
-        user.cart_items.create!(item_id: item.id, quantity: 1)
+        trader.stocks.create!(item: item, stock_number: 1)
+        user.cart_items.create!(item: item, trader: trader, quantity: 1)
         Charge.create!(charge: 100)
         post orders_url, params: { order: valid_attributes }
         expect(response).to redirect_to(order_url(Order.last))
@@ -127,7 +136,8 @@ RSpec.describe "/orders", type: :request do
 
     context '不正パラメータを入力' do
       it '新しい注文を作成できない' do
-        user.cart_items.create!(item_id: item.id, quantity: 1)
+        trader.stocks.create!(item: item, stock_number: 1)
+        user.cart_items.create!(item: item, trader: trader, quantity: 1)
         Charge.create!(charge: 100)
         expect {
           post orders_url, params: { order: invalid_attributes }
@@ -135,7 +145,8 @@ RSpec.describe "/orders", type: :request do
       end
 
       it 'newテンプレートでレンダリングして成功応答' do
-        user.cart_items.create!(item_id: item.id, quantity: 1)
+        trader.stocks.create!(item: item, stock_number: 1)
+        user.cart_items.create!(item: item, trader: trader, quantity: 1)
         Charge.create!(charge: 100)
         post orders_url, params: { order: invalid_attributes }
         expect(response).to be_successful

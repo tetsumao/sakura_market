@@ -62,13 +62,13 @@ RSpec.describe "/delivery_periods", type: :request do
     end
 
     context '不正パラメータを入力' do
-      it "does not create a new DeliveryPeriod" do
+      it '新しい配達時間帯を作成できない' do
         expect {
           post admin_delivery_periods_url, params: { delivery_period: invalid_attributes }
         }.to change(DeliveryPeriod, :count).by(0)
       end
 
-      it 'newテンプレートでレンダリングして成功応答' do
+      it '成功した応答をnewテンプレートからレンダリング' do
         post admin_delivery_periods_url, params: { delivery_period: invalid_attributes }
         expect(response).to be_successful
       end
@@ -81,14 +81,14 @@ RSpec.describe "/delivery_periods", type: :request do
         {hour_to: 21}
       }
 
-      it "updates the requested delivery_period" do
+      it '要求された配達時間帯を更新' do
         delivery_period = DeliveryPeriod.create! valid_attributes
         patch admin_delivery_period_url(delivery_period), params: { delivery_period: new_attributes }
         delivery_period.reload
         expect(delivery_period.hour_to).to eq(21)
       end
 
-      it "redirects to the delivery_period" do
+      it '配達時間帯更新後のリダイレクト' do
         delivery_period = DeliveryPeriod.create! valid_attributes
         patch admin_delivery_period_url(delivery_period), params: { delivery_period: new_attributes }
         delivery_period.reload
@@ -106,14 +106,14 @@ RSpec.describe "/delivery_periods", type: :request do
   end
 
   describe "DELETE /destroy" do
-    it "destroys the requested delivery_period" do
+    it '要求された配達時間帯を削除' do
       delivery_period = DeliveryPeriod.create! valid_attributes
       expect {
         delete admin_delivery_period_url(delivery_period)
       }.to change(DeliveryPeriod, :count).by(-1)
     end
 
-    it "redirects to the delivery_periods list" do
+    it '配達時間帯削除後のリダイレクト' do
       delivery_period = DeliveryPeriod.create! valid_attributes
       delete admin_delivery_period_url(delivery_period)
       expect(response).to redirect_to(admin_delivery_periods_url)

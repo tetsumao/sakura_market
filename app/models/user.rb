@@ -13,7 +13,7 @@ class User < ApplicationRecord
   has_many :gooded_diaries, through: :goods, source: :diary
   has_many :coupons
 
-  validates :email, presence: true, 'valid_email_2/email': true
+  validates :email, presence: true, 'valid_email_2/email': true, uniqueness: true
   validates :user_name, :nickname, format: {
     with: /\A[0-9０-９\p{han}\p{Latin}\p{hiragana}\p{katakana}\u{30fc}\p{alpha}\p{blank}]+\z/
   }

@@ -1,0 +1,16 @@
+%h2 在庫の詳細
+
+.card-group
+  .card
+    .card-header 商品名
+    .card-body= @stock.item.item_name
+  .card
+    .card-header 在庫数
+    .card-body= @stock.stock_number
+
+- if @stock.order.present?
+  %br
+  %h2 注文詳細
+  = render 'orders/order', order: @stock.order, order_display_mode: :trader
+
+= link_to '戻る', trader_stocks_path, class: 'btn btn-outline-secondary'

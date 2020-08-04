@@ -1,5 +1,5 @@
 %h2 ショッピングカート
-
+%h3 販売元業者：#{@cart_items.first.trader.trader_name}
 %table.table.table-bordered
   %thead.thead-light
     %tr.text-center
@@ -12,21 +12,24 @@
   %tbody
     - @cart_items.each do |cart_item|
       %tr
-        %td.align-middle= link_to cart_item.item.item_name, cart_item.item
+        %td.align-middle= link_to cart_item.item.item_name, item_path(cart_item.item, trader_id: cart_item.trader)
         %td
           - if cart_item.item.picture.present?
-            = link_to(cart_item.item) do
+            = link_to item_path(cart_item.item, trader_id: cart_item.trader) do
               .text-center= image_tag cart_item.item.picture.url(:thumb)
         %td.align-middle.text-right= number_to_currency(cart_item.item.price)
         %td.align-middle.text-center
           = form_with model: cart_item, local: true, method: :patch do |f|
-            = f.select :quantity, 1..30, {}, id: nil
+            = f.select :quantity, cart_item.trader.item_stock_number_selection(cart_item.item_id), {}, id: nil
             = f.submit '', style: 'display: none;'
         %td.align-middle.text-right= number_to_currency(cart_item.item.price * cart_item.quantity)
         %td.align-middle.text-center= link_to '削除', cart_item, class: 'btn btn-danger btn-sm', method: :delete, data: { confirm: '削除してよろしいですか？' }
-
-%script{ type: 'text/javascript' }
-  $(function(){ $('select[name="cart_item[quantity]"]').change(function(){ $(this).next('input').click(); }); });
+:javascript
+  $(function(){
+    $('select[name="cart_item[quantity]"]').change(function(){
+      $(this).next('input').click();
+    });
+  });
 
 .form-actions.text-center
   = link_to 'レジに進む', new_order_path, class: 'btn btn-primary btn-lg'

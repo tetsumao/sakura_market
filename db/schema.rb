@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_20_171513) do
+ActiveRecord::Schema.define(version: 2020_07_30_165842) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,7 +31,9 @@ ActiveRecord::Schema.define(version: 2020_07_20_171513) do
     t.integer "quantity", default: 0, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "trader_id"
     t.index ["item_id"], name: "index_cart_items_on_item_id"
+    t.index ["trader_id"], name: "index_cart_items_on_trader_id"
     t.index ["user_id"], name: "index_cart_items_on_user_id"
   end
 
@@ -128,8 +130,31 @@ ActiveRecord::Schema.define(version: 2020_07_20_171513) do
     t.string "ship_address", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "trader_id"
     t.index ["delivery_period_id"], name: "index_orders_on_delivery_period_id"
+    t.index ["trader_id"], name: "index_orders_on_trader_id"
     t.index ["user_id"], name: "index_orders_on_user_id"
+  end
+
+  create_table "stocks", force: :cascade do |t|
+    t.bigint "trader_id", null: false
+    t.bigint "item_id", null: false
+    t.bigint "order_id"
+    t.integer "stock_number", default: 1
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["item_id"], name: "index_stocks_on_item_id"
+    t.index ["order_id"], name: "index_stocks_on_order_id"
+    t.index ["trader_id"], name: "index_stocks_on_trader_id"
+  end
+
+  create_table "traders", force: :cascade do |t|
+    t.string "email"
+    t.string "password_digest"
+    t.string "trader_name", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index "lower((email)::text)", name: "index_traders_on_LOWER_email", unique: true
   end
 
   create_table "users", force: :cascade do |t|
@@ -155,6 +180,7 @@ ActiveRecord::Schema.define(version: 2020_07_20_171513) do
   end
 
   add_foreign_key "cart_items", "items"
+  add_foreign_key "cart_items", "traders"
   add_foreign_key "cart_items", "users"
   add_foreign_key "comments", "diaries"
   add_foreign_key "comments", "users"
@@ -167,5 +193,9 @@ ActiveRecord::Schema.define(version: 2020_07_20_171513) do
   add_foreign_key "order_items", "items"
   add_foreign_key "order_items", "orders"
   add_foreign_key "orders", "delivery_periods"
+  add_foreign_key "orders", "traders"
   add_foreign_key "orders", "users"
+  add_foreign_key "stocks", "items"
+  add_foreign_key "stocks", "orders"
+  add_foreign_key "stocks", "traders"
 end

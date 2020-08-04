@@ -1,0 +1,11 @@
+-# frozen_string_literal: true
+= simple_form_for(@stock, url: (@stock.new_record? ? trader_stocks_path : trader_stock_path(@stock))) do |f|
+  = f.error_notification
+  = f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present?
+
+  .form-inputs
+    = f.association :item, label_method: :item_name, include_blank: false
+    = f.input :stock_number
+
+  .form-actions.text-center
+    = f.button :submit, class: 'btn btn-info'

@@ -3,7 +3,7 @@ class CartItemsController < ApplicationController
   before_action :set_cart_item, only: [:update, :destroy]
 
   def index
-    @cart_items = current_user.cart_items.eager_load(:item)
+    @cart_items = current_user.cart_items.eager_load(:item).eager_load(:trader)
     if @cart_items.empty?
       redirect_to items_url, notice: 'カートに商品がありません。'
     end
@@ -16,7 +16,7 @@ class CartItemsController < ApplicationController
         format.html { redirect_to items_path, notice: "#{@cart_item.item.item_name} x #{@cart_item.quantity} をカートに追加しました。" }
         format.js
       else
-        format.html { redirect_to @cart_item.item, alert: @cart_item.toastr_error_message('カートに追加できませんでした：') }
+        format.html { redirect_to item_path(@cart_item.item, trader_id: @cart_item.trader), alert: @cart_item.toastr_error_message('カートに追加できませんでした：') }
         format.js
       end
     end
@@ -41,7 +41,7 @@ class CartItemsController < ApplicationController
     end
 
     def cart_item_params
-      params.require(:cart_item).permit(:item_id, :quantity)
+      params.require(:cart_item).permit(:item_id, :trader_id, :quantity)
     end
     def cart_item_update_params
       params.require(:cart_item).permit(:quantity)

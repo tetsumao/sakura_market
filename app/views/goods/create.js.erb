@@ -2,5 +2,5 @@
   $('.good_button_<%= @diary.id %>').html("<%=j render 'good_button', diary: @diary %>");
   toastr.info('Good! しました。');
 <% else %>
-  toastr.warning('<%= @good.toastr_error_message("Good!できませんでした：") %>');
+  toastr.warning('<%= raw @good.toastr_error_message("Good!できませんでした：") %>');
 <% end %>

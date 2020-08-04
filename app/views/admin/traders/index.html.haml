@@ -1,0 +1,24 @@
+%h2 事業者一覧
+
+%table.table
+  %thead.thead-dark
+    %tr
+      %th{ scope: 'col' } ID
+      %th{ scope: 'col' } メールアドレス
+      %th{ scope: 'col' } 事業者名
+      %th
+      %th
+      %th
+
+  %tbody
+    - @traders.each do |trader|
+      %tr
+        %td= trader.id
+        %td= trader.email
+        %td= trader.trader_name
+        %td= link_to '表示', admin_trader_path(trader), class: 'btn btn-outline-dark btn-sm'
+        %td= link_to '編集', edit_admin_trader_path(trader), class: 'btn btn-outline-info btn-sm'
+        %td= link_to '削除', admin_trader_path(trader), class: 'btn btn-danger btn-sm', method: :delete, data: { confirm: '削除してよろしいですか？' }
+= paginate @traders
+
+= link_to '新しい事業者', new_admin_trader_path, class: 'btn btn-primary'
