@@ -22,5 +22,21 @@ RSpec.describe Order, type: :model do
       order = build(:order, user_id: user.id, delivery_period_id: delivery_period.id, ship_address: nil)
       expect(order).not_to be_valid
     end
+
+    it '注文済みの時のみキャンセル可能' do
+      user = create(:user)
+      delivery_period = create(:delivery_period)
+      order = create(:order, user_id: user.id, delivery_period_id: delivery_period.id)
+      order.order_status = :canceled
+      expect(order).to be_valid
+    end
+
+    it '注文済み以外の時のみキャンセル不可' do
+      user = create(:user)
+      delivery_period = create(:delivery_period)
+      order = create(:order, user_id: user.id, delivery_period_id: delivery_period.id, order_status: :processing)
+      order.order_status = :canceled
+      expect(order).not_to be_valid
+    end
   end
 end

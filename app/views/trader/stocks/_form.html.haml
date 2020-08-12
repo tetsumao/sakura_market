@@ -4,7 +4,7 @@
   = f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present?
 
   .form-inputs
-    = f.association :item, label_method: :item_name, include_blank: false
+    = f.association :item, collection: Item.default_order, label_method: :item_name, include_blank: false
     = f.input :stock_number
 
   .form-actions.text-center

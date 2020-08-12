@@ -1,6 +1,6 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_order, only: [:show]
+  before_action :set_order, only: [:show, :cancel]
   before_action :build_order, only: [:confirm, :create]
 
   def index
@@ -13,6 +13,7 @@ class OrdersController < ApplicationController
   def new
     @coupon_use = session.fetch(:coupon_use, 0).to_i
     @coupon_use_point = session.fetch(:coupon_use_point, current_user.coupon_point).to_i
+    @payment_kind = session.fetch(:payment_kind, current_user.card.present? ? 1 :0).to_i
     @update_ship = session.fetch(:update_ship, 1).to_i
     @order = current_user.orders.build(session.fetch(:order, {}))
     @order.apply_cart_items(current_user.cart_items.eager_load(:item))
@@ -24,12 +25,17 @@ class OrdersController < ApplicationController
     end
   end
 
+  def card
+    @user = current_user
+  end
+
   def confirm
     if @order.order_items.present?
       if @order.valid?
         # 再入力用としてセッションに入力情報を保持
         session[:coupon_use] = @coupon_use
         session[:coupon_use_point] = @coupon_use_point
+        session[:payment_kind] = @payment_kind
         session[:update_ship] = @update_ship
         session[:order] = order_params
       else
@@ -42,12 +48,14 @@ class OrdersController < ApplicationController
 
   def create
     if @order.order_items.present?
-      if @order.save
+      # ※支払い
+      if @order.payment
         current_user.cart_items.destroy_all
         current_user.update!(zip: @order.ship_zip, address: @order.ship_address) if @update_ship == 1
         # セッション情報クリア
         session[:coupon_use] = nil
         session[:coupon_use_point] = nil
+        session[:payment_kind] = nil
         session[:update_ship] = nil
         session[:order] = nil
         redirect_to @order, notice: '注文しました。'
@@ -59,6 +67,14 @@ class OrdersController < ApplicationController
     end
   end
 
+  def cancel
+    if @order.cancel
+      redirect_to @order, notice: '注文をキャンセルしました'
+    else
+      redirect_to @order, alert: @order.toastr_error_message('キャンセルできません:')
+    end
+  end
+
   private
     def set_order
       @order = current_user.orders.find(params[:id])
@@ -67,6 +83,7 @@ class OrdersController < ApplicationController
     def build_order
       @coupon_use = params[:coupon_use].to_i
       @coupon_use_point = params[:coupon_use_point].to_i
+      @payment_kind = params[:payment_kind].to_i
       @update_ship = params[:update_ship].to_i
       use_point = 0
       case @coupon_use
@@ -75,9 +92,11 @@ class OrdersController < ApplicationController
       when 2 # 指定ポイントを使用
         use_point = @coupon_use_point
       end
+      # 代引き手数料が必要かどうか
+      with_charge = (@payment_kind == 0)
 
       @order = current_user.orders.build(order_params)
-      @order.apply_cart_items(current_user.cart_items.eager_load(:item), use_point)
+      @order.apply_cart_items(current_user.cart_items.eager_load(:item), use_point, with_charge)
     end
 
     def order_params

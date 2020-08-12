@@ -15,7 +15,24 @@
       = radio_button_tag :coupon_use, 2, @coupon_use == 2
       = label_tag :coupon_use_2, '利用ポイント数を入力する'
       = number_field_tag :coupon_use_point, @coupon_use_point, min: 1, max: [current_user.coupon_point, @order.total_price].min
-
+  %br
+  %h3 支払い方法
+  .row
+    .col-lg-3
+      = radio_button_tag :payment_kind, 0, @payment_kind == 0
+      = label_tag :payment_kind_0, '代引き'
+    .col-lg-3
+      = radio_button_tag :payment_kind, 1, @payment_kind == 1
+      = label_tag :payment_kind_1, 'クレジットカード'
+    .col-lg-4
+      - if @order.user.card.present? 
+        = @order.user.card_display
+      - else
+        カード情報なし
+    .col-lg-2
+      -# turbolinkを無効化しないとカード登録のjsが動かないことがある
+      = link_to 'カード登録', card_orders_path, class: 'btn btn-primary', data: {turbolinks: false}
+  %br
   .row
     .col-lg-3
       %h3 配達希望日時

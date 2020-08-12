@@ -3,7 +3,11 @@ Rails.application.routes.draw do
   resources :items, only: [:index, :show]
   resources :orders, only: [:index, :show, :new, :create] do
     collection do
+      get :card
       post :confirm
+    end
+    member do
+      post :cancel
     end
   end
   resources :cart_items, only: [:index, :create, :update, :destroy]
@@ -24,6 +28,10 @@ Rails.application.routes.draw do
     sessions: 'users/sessions',
     passwords: 'users/passwords'
   }
+  resource :user, only: [:show] do
+    post :register_card
+    delete :delete_card
+  end
 
   namespace :admin do
     root 'items#index'
@@ -43,6 +51,7 @@ Rails.application.routes.draw do
     get :login, to: 'sessions#new'
     resource :session, only: [:create, :destroy]
     resources :stocks
-    resources :orders, only: [:index, :show]
+    resources :orders, only: [:index, :show, :update]
+    resources :shippings
   end
 end

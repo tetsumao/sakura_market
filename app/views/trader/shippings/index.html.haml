@@ -1,0 +1,26 @@
+%h2 送料一覧
+
+%table.table.table-bordered
+  %thead.thead-light
+    %tr.text-center
+      %th{ scope: 'col' } ID
+      %th{ scope: 'col' } 箱名
+      %th{ scope: 'col' } 数量
+      %th{ scope: 'col' } 単価
+      %th
+      %th
+      %th
+
+  %tbody
+    - @shippings.each do |shipping|
+      %tr
+        %td= shipping.id
+        %td= shipping.shipping_name
+        %td= shipping.quantity
+        %td= shipping.price
+        %td= link_to '表示', trader_shipping_path(shipping), class: 'btn btn-outline-dark btn-sm'
+        %td= link_to '編集', edit_trader_shipping_path(shipping), class: 'btn btn-outline-info btn-sm'
+        %td= link_to '削除', trader_shipping_path(shipping), class: 'btn btn-danger btn-sm', method: :delete, data: { confirm: '削除してよろしいですか？' }
+= paginate @shippings
+
+= link_to '新しい送料', new_trader_shipping_path, class: 'btn btn-primary'

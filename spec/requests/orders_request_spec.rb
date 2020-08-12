@@ -134,6 +134,59 @@ RSpec.describe "/orders", type: :request do
       end
     end
 
+    context '金額算出確認' do
+      it '商品金額、代引き手数料、送料、消費税額の確認' do
+        item.update(price: 1000)
+        trader.stocks.create!(item: item, stock_number: 1)
+        user.cart_items.create!(item: item, trader: trader, quantity: 1)
+        Charge.create!(charge: 100)
+        post orders_url, params: { order: valid_attributes }
+        order = Order.last
+        expect(order.item_price).to eq(1000)
+        expect(order.charge_price).to eq(100)
+        expect(order.shipping_price).to eq(600)
+        expect(order.tax_price).to eq(170)
+      end
+    end
+
+    context '送料算出の確認' do
+      it '送料(箱なし)は5商品で600円' do
+        trader.stocks.create!(item: item, stock_number: 5)
+        user.cart_items.create!(item: item, trader: trader, quantity: 5)
+        Charge.create!(charge: 100)
+        post orders_url, params: { order: valid_attributes }
+        order = Order.last
+        expect(order.shipping_price).to eq(600)
+      end
+      it '送料(箱なし)は6商品で1200円' do
+        trader.stocks.create!(item: item, stock_number: 6)
+        user.cart_items.create!(item: item, trader: trader, quantity: 6)
+        Charge.create!(charge: 100)
+        post orders_url, params: { order: valid_attributes }
+        order = Order.last
+        expect(order.shipping_price).to eq(1200)
+      end
+
+      it '送料(箱:3個100円)は3商品で100円' do
+        trader.stocks.create!(item: item, stock_number: 3)
+        trader.shippings.create!(quantity: 3, price: 100)
+        user.cart_items.create!(item: item, trader: trader, quantity: 3)
+        Charge.create!(charge: 100)
+        post orders_url, params: { order: valid_attributes }
+        order = Order.last
+        expect(order.shipping_price).to eq(100)
+      end
+      it '送料(箱:3個100円)は4商品で200円' do
+        trader.stocks.create!(item: item, stock_number: 4)
+        trader.shippings.create!(quantity: 3, price: 100)
+        user.cart_items.create!(item: item, trader: trader, quantity: 4)
+        Charge.create!(charge: 100)
+        post orders_url, params: { order: valid_attributes }
+        order = Order.last
+        expect(order.shipping_price).to eq(200)
+      end
+    end
+
     context '不正パラメータを入力' do
       it '新しい注文を作成できない' do
         trader.stocks.create!(item: item, stock_number: 1)
@@ -150,6 +203,34 @@ RSpec.describe "/orders", type: :request do
         Charge.create!(charge: 100)
         post orders_url, params: { order: invalid_attributes }
         expect(response).to be_successful
+      end
+    end
+  end
+
+  describe "POST /cancel" do
+    context '正常パラメータを入力' do
+      it 'キャンセル可能時のキャンセル' do
+        order = Order.create! full_valid_attributes
+        post cancel_order_path(order)
+        order.reload
+        expect(order.order_status.to_sym).to eq(:canceled)
+      end
+
+      it 'キャンセル後のリダイレクト' do
+        order = Order.create! full_valid_attributes
+        post cancel_order_path(order)
+        order.reload
+        expect(response).to redirect_to(order_url(order))
+      end
+    end
+
+    context '不正パラメータを入力' do
+      it 'キャンセル不可時のキャンセル' do
+        order = Order.create! full_valid_attributes
+        order.update!(order_status: :processing)
+        post cancel_order_path(order)
+        order.reload
+        expect(order.order_status.to_sym).to eq(:processing)
       end
     end
   end

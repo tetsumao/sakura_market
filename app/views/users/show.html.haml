@@ -1,0 +1,45 @@
+%h2 #{@user.user_name} さんのプロフィール
+- if @user.picture.present?
+  .text-center= image_tag @user.picture.url
+.card.mb-3
+  .card-header= User.human_attribute_name :user_name
+  .card-body= @user.user_name
+.card.mb-3
+  .card-header= User.human_attribute_name :nickname
+  .card-body= @user.nickname
+.card.mb-3
+  .card-header= User.human_attribute_name :zip
+  .card-body= @user.zip
+.card.mb-3
+  .card-header= User.human_attribute_name :address
+  .card-body= @user.address
+.card.mb-3
+  .card-header= 'カード情報'
+  .card-body
+    %div
+      - if @user.card.present? 
+        = @user.card_display
+        = link_to '削除', delete_card_user_path, class: 'btn btn-danger btn-sm', method: :delete, data: { confirm: 'カード情報を削除してよろしいですか？' }
+        %br
+        カード情報を更新する場合は以下で登録してください。
+      - else
+        カード情報なし
+    %input#cardRegisterOpen.btn.btn-outline-info.btn-sm{ type: 'button', value: '▼カード登録' }
+    %input#cardRegisterClose.btn.btn-outline-info.btn-sm.active{ type: 'button', value: '▲カード登録', style: 'display: none;' }
+    #cardRegisterForm{ style: 'display: none;'}
+      = render 'card_form', redirect_url: ''
+:javascript
+  $(function(){
+    $('#cardRegisterOpen').click(function(){
+      $(this).hide();
+      $('#cardRegisterClose').show();
+      $('#cardRegisterForm').show();
+    });
+    $('#cardRegisterClose').click(function(){
+      $(this).hide();
+      $('#cardRegisterOpen').show();
+      $('#cardRegisterForm').hide();
+    });
+  });
+
+= link_to 'アカウント編集', edit_user_registration_path, class: 'btn btn-primary'

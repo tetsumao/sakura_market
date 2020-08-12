@@ -26,13 +26,13 @@
                   ショッピング
               - if user_signed_in?
                 %li.nav-item
-                  %a.nav-link.btn.page-link.text-primary.d-inline-block{href: cart_items_path}
-                    ショッピングカート：
+                  %a.nav-link.btn.page-link.text-primary.d-inline-block.mx-1{href: cart_items_path}
+                    カート：
                     %span#cartItemCount
                       = current_user.cart_items.quantity
                     品
                 %li.nav-item
-                  %a.nav-link.btn.page-link.text-success.d-inline-block{href: coupons_path}
+                  %a.nav-link.btn.page-link.text-success.d-inline-block.mx-1{href: coupons_path}
                     クーポン：
                     = current_user.coupon_point
                     ポイント
@@ -42,8 +42,7 @@
             %ul.navbar-nav
               - if user_signed_in?
                 %li.nav-item
-                  %a.nav-link{href: edit_user_registration_path}
-                    #{current_user.user_name} さん
+                  = link_to "#{current_user.user_name} さん", user_path, class: 'nav-link', data: { no_turbolink: true }
                 %li.nav-item
                   %a.nav-link{href: destroy_user_session_path, 'data-method': :delete}
                     ログアウト

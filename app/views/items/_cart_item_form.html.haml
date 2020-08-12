@@ -3,15 +3,19 @@
     = form_with({model: CartItem.new}.merge(options)) do |f|
       = f.hidden_field :item_id, value: item.id, id: ''
       = f.hidden_field :trader_id, value: trader.id, id: ''
+      - item_stock_number_selection = trader.item_stock_number_selection(item.id)
       %li.list-group-item
         .row.text-right
           .col-lg-7
             = number_to_currency(item.price)
           .col-lg-5
             = f.label :quantity
-            = f.select :quantity, trader.item_stock_number_selection(item.id), {}, id:nil
+            = f.select :quantity, item_stock_number_selection, {}, id:nil
       %li.list-group-item
-        = f.submit (disabled ? 'カートに入っています' : 'カートに入れる'), id: "cartItemSubmit#{item.id}", class: 'btn btn-primary btn-block', data: {disable_with: 'カートに入れます..'}, disabled: disabled
+        - if item_stock_number_selection.first > 0
+          = f.submit (disabled ? 'カートに入っています' : 'カートに入れる'), id: "cartItemSubmit#{item.id}", class: 'btn btn-primary btn-block', data: {disable_with: 'カートに入れます..'}, disabled: disabled
+        - else
+          = f.submit '売り切れです', id: "cartItemSubmit#{item.id}", class: 'btn btn-primary btn-block', disabled: true
   - else
     %li.list-group-item
       = number_to_currency(item.price)

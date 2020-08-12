@@ -1,3 +1,21 @@
+- if order_display_mode == :trader || order_display_mode == :user
+  .card.mb-3
+    .card-header 注文ステータス
+    .card-body
+      %table
+        %tr
+          %td
+            %strong.mx-3= order.human_attribute_enum(:order_status)
+          %td{style: 'display:inline-flex'}
+            - if order_display_mode == :trader
+              - if order.ordered?
+                = button_to '発送処理中に変更', trader_order_path(order), data: {confirm: '発送処理中に変更してよろしいですか？'}, method: :patch, params: {'order[order_status]': :processing}, class: 'btn btn-primary mx-1'
+              - elsif order.processing?
+                = button_to '処理中発送済みに変更', trader_order_path(order), data: {confirm: '処理中発送済みに変更してよろしいですか？'}, method: :patch, params: {'order[order_status]': :sent}, class: 'btn btn-primary mx-1'
+              - if order.cancelable?
+                = button_to '注文キャンセル', trader_order_path(order), data: {confirm: 'キャンセルしてよろしいですか？'}, method: :patch, params: {'order[order_status]': :canceled}, class: 'btn btn-danger mx-1'
+            - elsif order.cancelable?
+              = link_to '注文キャンセル', cancel_order_path(order), data: {confirm: 'キャンセルしてよろしいですか？'}, method: :post, class: 'btn btn-danger mx-1'
 .row
   .col-lg-8
     %h3 商品一覧
@@ -8,7 +26,6 @@
           %th{ scope: 'col' } 単価
           %th{ scope: 'col' } 数量
           %th{ scope: 'col' } 価格
-
       %tbody
         - order.order_items.each do |order_item|
           %tr
@@ -16,11 +33,50 @@
             %td.align-middle.text-right= number_to_currency(order_item.price)
             %td.align-middle.text-right= order_item.quantity
             %td.align-middle.text-right= number_to_currency(order_item.price * order_item.quantity)
-    %br
     - if order_display_mode == :trader
-      %h3 購入者名：#{order.user.user_name}
+      %h3 送料(箱)一覧
+      %table.table.table-bordered
+        %thead.thead-light
+          %tr.text-center
+            %th{ scope: 'col' } 箱名
+            %th{ scope: 'col' } 単価
+            %th{ scope: 'col' } 箱数
+            %th{ scope: 'col' } 価格
+        %tbody
+          - order.order_shippings.each do |order_shipping|
+            %tr
+              %td.align-middle= order_shipping.shipping_name
+              %td.align-middle.text-right= number_to_currency(order_shipping.price)
+              %td.align-middle.text-right= order_shipping.box
+              %td.align-middle.text-right= number_to_currency(order_shipping.price * order_shipping.box)
+      %h3 支払い情報
+      %table.table.table-bordered
+        %thead.thead-light
+          %tr
+            %th 購入者名
+            %td= order.user.user_name
+          %tr
+            %th 支払い方法
+            %td= order.card_payment? ? 'クレジットカード' : '代引き'
     - else
-      %h3 販売元業者：#{order.trader.trader_name}
+      %h3 支払い情報
+      %table.table.table-bordered
+        %thead.thead-light
+          %tr
+            %th 販売元業者
+            %td= order.trader.trader_name
+          - if order_display_mode != :not_entered
+            %tr
+              %th 支払い方法
+              %td
+                - if order.card_payment?
+                  - if order.user.card.present? 
+                    クレジットカード
+                    = order.user.card_display
+                  - else
+                    ―
+                - else
+                  代引き
   .col-lg-4
     %h3 請求金額
     %table.table.table-bordered
@@ -28,9 +84,10 @@
         %tr
           %th 商品金額
           %td.text-right= number_to_currency(order.item_price)
-        %tr
-          %th 代引き手数料
-          %td.text-right= number_to_currency(order.charge_price)
+        - if order.charge_price > 0
+          %tr
+            %th 代引き手数料
+            %td.text-right= number_to_currency(order.charge_price)
         %tr
           %th 送料
           %td.text-right= number_to_currency(order.shipping_price)

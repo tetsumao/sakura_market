@@ -1,0 +1,14 @@
+%h2 送料の詳細
+
+.card-group
+  .card
+    .card-header 箱名
+    .card-body= @shipping.shipping_name
+  .card
+    .card-header 数量
+    .card-body.text-right= @shipping.quantity
+  .card
+    .card-header 単価
+    .card-body.text-right= number_to_currency(@shipping.price)
+
+= link_to '戻る', trader_shippings_path, class: 'btn btn-outline-secondary'

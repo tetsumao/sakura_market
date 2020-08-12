@@ -1,6 +1,6 @@
 %h2 注文を確認してください
 
-= render 'order', order: @order, order_display_mode: :user
+= render 'order', order: @order, order_display_mode: :confirm
 .row
   .col-lg-9.offset-lg-3
     = "配達先で住所情報を更新#{(@update_ship == 1) ? 'する' : 'しない'}"
@@ -15,4 +15,4 @@
   .form-actions.text-center
     = f.submit '注文を確定する', class: 'btn btn-danger btn-lg'
 
-= link_to 'ポイントと配達先の入力へ戻る', new_order_path, class: 'btn btn-outline-secondary'
+= link_to '支払い方法と配達先の入力へ戻る', new_order_path, class: 'btn btn-outline-secondary'

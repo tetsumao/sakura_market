@@ -4,11 +4,11 @@
   %thead.thead-light
     %tr.text-center
       %th{ scope: 'col' } 注文日
+      %th{ scope: 'col' } ステータス
       %th{ scope: 'col' } 配達希望日時
       %th{ scope: 'col' } 商品金額
-      %th{ scope: 'col' } 代引き手数料
-      %th{ scope: 'col' } 送料
-      %th{ scope: 'col' } 消費税
+      %th{ scope: 'col' } 手数料・送料
+      %th{ scope: 'col' } 支払方法
       %th{ scope: 'col' } 合計金額
       %th{ scope: 'col' } ポイント利用
       %th{ scope: 'col' } 請求金額
@@ -17,11 +17,11 @@
     - @orders.each do |order|
       %tr
         %td.text-center= order.created_at.strftime('%Y/%m/%d')
+        %td.text-center= order.human_attribute_enum(:order_status)
         %td.text-center= "#{order.delivery_date.strftime('%Y/%m/%d')} #{order.delivery_period.period_name}"
         %td.text-right= number_to_currency(order.item_price)
-        %td.text-right= number_to_currency(order.charge_price)
-        %td.text-right= number_to_currency(order.shipping_price)
-        %td.text-right= number_to_currency(order.tax_price)
+        %td.text-right= number_to_currency(order.charge_price + order.shipping_price)
+        %td.text-center= order.card_payment? ? 'カード' : '代引き'
         %td.text-right= number_to_currency(order.total_price)
         %td.text-right= number_to_currency(order.point_price)
         %td.text-right= number_to_currency(order.invoice_price)

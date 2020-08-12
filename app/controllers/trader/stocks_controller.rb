@@ -3,7 +3,7 @@ class Trader::StocksController < Trader::Base
 
   def index
     @items = current_trader.items.default_order
-    @stocks = current_trader.stocks.default_order.page(params[:page]).per(20)
+    @stocks = current_trader.stocks.eager_load(:item, :order).default_order.page(params[:page]).per(20)
   end
 
   def show

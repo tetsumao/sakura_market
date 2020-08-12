@@ -39,6 +39,7 @@
       %th
 
   %tbody
+    - updatable_stock_ids = @stocks.updatable.pluck(:id)
     - @stocks.each do |stock|
       %tr
         %td= stock.id
@@ -46,7 +47,7 @@
         %td= stock.stock_number
         %td= stock.order.present? ? "注文：#{stock.order.created_at.strftime('%Y/%m/%d %H:%M')}" : "#{stock.stock_number > 0 ? '追加' : '破棄'}：#{stock.created_at.strftime('%Y/%m/%d %H:%M')}"
         %td= link_to '表示', trader_stock_path(stock), class: 'btn btn-outline-dark btn-sm'
-        - if stock.created_at > @stocks.last_ordered_created_at
+        - if updatable_stock_ids.include?(stock.id)
           %td= link_to '編集', edit_trader_stock_path(stock), class: 'btn btn-outline-info btn-sm'
           %td= link_to '削除', trader_stock_path(stock), class: 'btn btn-danger btn-sm', method: :delete, data: { confirm: '削除してよろしいですか？' }
         - else

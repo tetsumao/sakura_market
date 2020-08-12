@@ -46,6 +46,11 @@ ja:
         item_name: '商品名'
         picture: '商品画像'
         price: '単価'
+      order_shipping:
+        shipping: '送料'
+        box: '箱数'
+        shipping_name: '箱名'
+        price: '単価'
       order:
         delivery_date: '配達希望日'
         delivery_period: '配達希望時間帯'
@@ -56,6 +61,18 @@ ja:
         ship_zip: '郵便番号'
         ship_address: '住所'
         trader: '業者'
+        order_status: '注文ステータス'
+        stripe_invid: 'Stripe支払いID'
+      order/order_status:
+        ordered: '注文済み'
+        processing: '発送処理中'
+        sent: '処理中発送済み'
+        canceled: 'キャンセル'
+      shipping:
+        trader: '業者'
+        shipping_name: '箱名'
+        quantity: '数量'
+        price: '単価'
       user:
         email: 'メールアドレス'
         password: 'パスワード'
@@ -67,6 +84,7 @@ ja:
         address: '住所'
         nickname: 'ニックネーム'
         picture: 'プロフィール画像'
+        stripe_cusid: 'Stripe顧客ID'
       diary:
         content: '本文'
         user: '投稿ユーザ'
@@ -89,7 +107,7 @@ ja:
         password: 'パスワード'
         trader_name: '業者名'
       stock:
-        rader: '業者'
+        trader: '業者'
         item: '商品'
         order_item: '注文商品'
         stock_number: '在庫数'

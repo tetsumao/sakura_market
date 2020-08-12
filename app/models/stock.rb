@@ -6,7 +6,7 @@ class Stock < ApplicationRecord
   validates :stock_number, numericality: {only_integer: true, other_than: 0}
   validate :validate_stock_number
 
-  scope :updatable, -> {where(arel_table[:created_at].gt(last_ordered_created_at))}
+  scope :updatable, -> {where(order_id: nil).where(arel_table[:created_at].gt(last_ordered_created_at))}
   scope :default_order, -> {order(updated_at: :desc)}
 
   def self.item_id_stock_number_hash
@@ -14,7 +14,7 @@ class Stock < ApplicationRecord
   end
 
   def self.last_ordered_created_at
-    @last_ordered_created_at ||= (where.not(order_id: nil).maximum(:created_at) || Time.at(0))
+    where.not(order_id: nil).maximum(:created_at) || Time.at(0)
   end
 
   private

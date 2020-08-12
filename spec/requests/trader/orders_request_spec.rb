@@ -46,4 +46,32 @@ RSpec.describe "Trader::Orders", type: :request do
       expect(response).to be_successful
     end
   end
+
+  describe "PATCH /update" do
+    context '正常パラメータを入力' do
+      it '注文ステータスを更新' do
+        order = Order.create! full_valid_attributes
+        patch trader_order_url(order), params: { order: { order_status: :processing } }
+        order.reload
+        expect(order.order_status.to_sym).to eq(:processing)
+      end
+
+      it '注文ステータス更新後のリダイレクト' do
+        order = Order.create! full_valid_attributes
+        patch trader_order_url(order), params: { order: { order_status: :processing } }
+        order.reload
+        expect(response).to redirect_to(trader_order_url(order))
+      end
+    end
+
+    context '不正パラメータを入力' do
+      it 'キャンセル不可状態でキャンセル' do
+        order = Order.create! full_valid_attributes
+        order.update(order_status: :processing)
+        patch trader_order_url(order), params: { order: { order_status: :canceled } }
+        order.reload
+        expect(order.order_status.to_sym).to eq(:processing)
+      end
+    end
+  end
 end

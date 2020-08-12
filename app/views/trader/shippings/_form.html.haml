@@ -1,0 +1,12 @@
+-# frozen_string_literal: true
+= simple_form_for(@shipping, url: (@shipping.new_record? ? trader_shippings_path : trader_shipping_path(@shipping))) do |f|
+  = f.error_notification
+  = f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present?
+
+  .form-inputs
+    = f.input :shipping_name
+    = f.input :quantity
+    = f.input :price
+
+  .form-actions.text-center
+    = f.button :submit, class: 'btn btn-primary'

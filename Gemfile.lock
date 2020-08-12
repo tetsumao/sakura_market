@@ -262,6 +262,7 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
+    stripe (5.23.1)
     temple (0.8.2)
     thor (1.0.1)
     thread_safe (0.3.6)
@@ -276,7 +277,7 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.7)
-    valid_email2 (3.2.4)
+    valid_email2 (3.2.5)
       activemodel (>= 3.2)
       mail (~> 2.5)
     warden (1.2.8)
@@ -328,6 +329,7 @@ DEPENDENCIES
   simple_form
   spring
   spring-watcher-listen (~> 2.0.0)
+  stripe
   toastr-rails
   turbolinks (~> 5)
   valid_email2

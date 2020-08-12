@@ -3,6 +3,7 @@ class Trader < ApplicationRecord
   has_many :orders, -> {order(created_at: :desc)}
   has_many :cart_items
   has_many :items, -> {distinct}, through: :stocks
+  has_many :shippings, -> {order(:quantity)}, dependent: :destroy
 
   scope :default_order, -> {order(:id)}
 

@@ -20,8 +20,9 @@ gem 'simple_form'
 gem 'toastr-rails'
 gem 'carrierwave', '~> 1.3.1'
 gem 'mini_magick'
-gem "date_validator"
-gem "valid_email2"
+gem 'date_validator'
+gem 'valid_email2'
+gem 'stripe'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
@@ -38,8 +39,8 @@ group :test do
   gem 'capybara', '>= 2.15'
   gem 'selenium-webdriver'
   gem 'webdrivers'
-  gem "rspec-rails"
-  gem "factory_bot_rails"
+  gem 'rspec-rails'
+  gem 'factory_bot_rails'
 end
 
 group :production do

@@ -17,11 +17,6 @@ class CartItem < ApplicationRecord
     sum(:quantity)
   end
 
-  def self.shipping_price
-    # 送料は5商品ごとに600円追加する
-    ((quantity - 1).div(5) + 1) * 600
-  end
-
   private
     # 1種類の業者のみ
     def one_trader

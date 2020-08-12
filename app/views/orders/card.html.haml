@@ -1,0 +1,4 @@
+%h2 支払いカード情報を登録してください
+= render 'users/card_form', redirect_url: new_order_path
+
+= link_to '支払い方法と配達先の入力へ戻る', new_order_path, class: 'btn btn-outline-secondary'
